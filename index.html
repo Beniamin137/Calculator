@@ -33,7 +33,6 @@
     input:focus,textarea:focus,select:focus{border-color:#555;}
     textarea{resize:vertical;min-height:52px;}
     .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
 
     .notice{display:flex;align-items:flex-start;gap:8px;background:#111;border:1px solid #222;border-radius:8px;padding:10px 13px;margin-bottom:12px;font-size:12px;font-weight:400;color:#555;}
 
@@ -41,7 +40,6 @@
     .pr{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:5px 0;color:#444;border-bottom:1px solid #161616;}
     .pr:last-child{border-bottom:none;}
     .pr.hl{color:#ccc;font-size:15px;font-weight:600;padding-top:9px;margin-top:3px;}
-    .pr.neg{color:#f87171;}
     .pr span:first-child{font-weight:400;}
     .pr span:last-child{font-weight:600;}
 
@@ -78,7 +76,6 @@
     .day-card{background:#0d0d0d;border:1px solid #191919;border-radius:10px;padding:13px;margin-bottom:8px;}
     .day-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
     .day-title{font-size:13px;font-weight:600;color:#ccc;}
-    .day-firm{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-top:3px;}
     .day-sub{font-size:11px;font-weight:400;color:#333;margin-top:2px;}
     .day-actions{display:flex;gap:5px;flex-shrink:0;}
     .ic{background:#161616;border:1px solid #202020;border-radius:6px;color:#3a3a3a;padding:5px 9px;font-size:12px;cursor:pointer;transition:all .15s;}
@@ -89,11 +86,13 @@
     .sb{background:#111;border-radius:7px;padding:8px 10px;}
     .sb.g{background:rgba(74,222,128,.04);}
     .sb.o{background:rgba(255,120,0,.04);}
+    .sb.r{background:rgba(248,113,113,.04);}
     .sl{font-size:10px;font-weight:500;color:#383838;margin-bottom:3px;}
     .sv{font-size:14px;font-weight:600;color:#888;}
     .sv.green{color:#4ade80;}
     .sv.orange{color:#e87e00;}
     .sv.red{color:#f87171;}
+    .sv.blue{color:#0ea5e9;}
 
     .day-note{margin-top:9px;font-size:12px;font-weight:400;color:#666;line-height:1.6;padding:9px 11px;background:#111;border-radius:7px;border-left:2px solid #222;}
 
@@ -109,7 +108,6 @@
     .empty{text-align:center;color:#252525;padding:50px 20px;font-size:13px;line-height:2;}
     .empty-icon{font-size:36px;display:block;margin-bottom:10px;}
 
-    /* PROFIT CARD */
     .profit-card{border-radius:14px;padding:20px;margin-bottom:12px;text-align:center;}
     .profit-card.g{background:#0a160d;border:1px solid rgba(74,222,128,.12);}
     .profit-card.r{background:#160a0a;border:1px solid rgba(248,113,113,.12);}
@@ -118,7 +116,6 @@
     .pc-val.g{color:#4ade80;}.pc-val.r{color:#f87171;}
     .pc-sub{font-size:12px;font-weight:400;color:#3a3a3a;margin-top:7px;line-height:1.5;}
 
-    /* SUM CARD */
     .sum-card{background:#111;border:1px solid #1c1c1c;border-radius:14px;padding:18px;margin-bottom:12px;}
     .sc-lbl{font-size:11px;font-weight:500;color:#444;margin-bottom:4px;letter-spacing:.3px;}
     .sc-val{font-size:28px;font-weight:700;}
@@ -132,11 +129,20 @@
 
     /* FIRM SELECTOR */
     .firm-sel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
-    .firm-btn{padding:10px 6px;border-radius:9px;border:2px solid #1e1e1e;background:#0a0a0a;cursor:pointer;text-align:center;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:4px;}
-    .firm-btn.active{border-color:var(--fc);}
-    .firm-btn .firm-logo{font-size:20px;}
-    .firm-btn .firm-name{font-size:11px;font-weight:600;color:#444;}
-    .firm-btn.active .firm-name{color:var(--fc);}
+    .firm-btn{padding:12px 6px 10px;border-radius:10px;border:2px solid #1e1e1e;background:#0a0a0a;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:5px;}
+    .firm-btn:hover{background:#111;}
+    .firm-btn.glovo-active{border-color:#F5B60A;background:rgba(245,182,10,0.06);}
+    .firm-btn.wolt-active{border-color:#00C2E0;background:rgba(0,194,224,0.06);}
+    .firm-btn.bolt-active{border-color:#34D058;background:rgba(52,208,88,0.06);}
+    .firm-logo-wrap{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .firm-name-lbl{font-size:11px;font-weight:600;color:#555;transition:color .2s;}
+    .firm-btn.glovo-active .firm-name-lbl{color:#F5B60A;}
+    .firm-btn.wolt-active .firm-name-lbl{color:#00C2E0;}
+    .firm-btn.bolt-active .firm-name-lbl{color:#34D058;}
+
+    /* FIRM BADGE (inline) */
+    .firm-badge{display:inline-flex;align-items:center;gap:5px;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;}
+    .firm-badge img{width:14px;height:14px;border-radius:3px;object-fit:contain;}
 
     /* TOGGLE */
     .toggle-row{display:flex;align-items:center;justify-content:space-between;background:#0a0a0a;border:1px solid #1e1e1e;border-radius:8px;padding:10px 13px;margin-bottom:12px;cursor:pointer;}
@@ -160,10 +166,8 @@
     .srv-item:last-child{border-bottom:none;}
     .srv-total{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#ccc;margin-top:8px;padding-top:8px;border-top:1px solid #1e1e1e;}
 
-    /* FUEL */
     .cui{display:inline-flex;align-items:center;gap:6px;background:#111;border:1px solid #1c1c1c;border-radius:7px;padding:6px 12px;font-size:12px;font-weight:500;color:#0ea5e9;margin-bottom:12px;}
 
-    /* CHART */
     .chart-wrap{background:#0a0a0a;border:1px solid #191919;border-radius:12px;padding:16px;margin-bottom:12px;overflow:hidden;}
     .chart-title{font-size:12px;font-weight:500;color:#444;margin-bottom:14px;}
     .bar-chart{display:flex;align-items:flex-end;gap:6px;height:120px;}
@@ -184,8 +188,7 @@
     <div class="hdr-sub">Venituri · Carburant · Service</div>
     <div class="badges">
       <span class="badge">Carte muncă 220 RON/săpt</span>
-      <span class="badge">Medicină 220 RON/lună</span>
-      <span class="badge">Profit șef 10%</span>
+      <span class="badge">Profit șef 10% (opțional)</span>
     </div>
   </div>
   <div class="tabs">
@@ -216,13 +219,34 @@ if(!window.storage){
 }
 
 const CARTE_MUNCA=220, FUEL_RATE=0.05, CUI="RO49730377";
-const MEDICINA=220; // per luna
-const SEF_PCT=0.10; // 10%
+const SEF_PCT=0.10;
+
+// SVG logos inline
+const LOGOS={
+  glovo:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+    <rect width="40" height="40" rx="8" fill="#F5B60A"/>
+    <text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#1a1200">G</text>
+  </svg>`,
+  wolt:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+    <rect width="40" height="40" rx="8" fill="#009DE0"/>
+    <text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#ffffff">W</text>
+  </svg>`,
+  bolt:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+    <rect width="40" height="40" rx="8" fill="#34D058"/>
+    <text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#0a2010">B</text>
+  </svg>`
+};
+
+const LOGO_SM={
+  glovo:`<svg viewBox="0 0 20 20" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" rx="4" fill="#F5B60A"/><text x="10" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="#1a1200">G</text></svg>`,
+  wolt:`<svg viewBox="0 0 20 20" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" rx="4" fill="#009DE0"/><text x="10" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="#fff">W</text></svg>`,
+  bolt:`<svg viewBox="0 0 20 20" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" rx="4" fill="#34D058"/><text x="10" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="#0a2010">B</text></svg>`
+};
 
 const FIRMS={
-  glovo:{name:'Glovo',color:'#F5B60A',bg:'rgba(245,182,10,0.1)',emoji:'🟡'},
-  wolt:{name:'Wolt',color:'#00C2E0',bg:'rgba(0,194,224,0.1)',emoji:'🔵'},
-  bolt:{name:'Bolt',color:'#34D058',bg:'rgba(52,208,88,0.1)',emoji:'🟢'}
+  glovo:{name:'Glovo',color:'#F5B60A',bg:'rgba(245,182,10,0.08)',border:'rgba(245,182,10,0.2)'},
+  wolt:{name:'Wolt',color:'#009DE0',bg:'rgba(0,157,224,0.08)',border:'rgba(0,157,224,0.2)'},
+  bolt:{name:'Bolt',color:'#34D058',bg:'rgba(52,208,88,0.08)',border:'rgba(52,208,88,0.2)'}
 };
 
 let days=[],fuels=[],serviceRecs=[],currentTab='add',histNav=null;
@@ -237,7 +261,6 @@ async function loadData(){
   try{const r=await window.storage.get('calc_days');if(r&&r.value)days=JSON.parse(r.value);}catch(e){days=[];}
   try{const r=await window.storage.get('calc_fuels');if(r&&r.value)fuels=JSON.parse(r.value);}catch(e){fuels=[];}
   try{const r=await window.storage.get('calc_service');if(r&&r.value)serviceRecs=JSON.parse(r.value);}catch(e){serviceRecs=[];}
-  // migrate old keys
   if(!days.length){try{const r=await window.storage.get('glovo_days');if(r&&r.value){days=JSON.parse(r.value);saveDays();}}catch(e){}}
   if(!fuels.length){try{const r=await window.storage.get('glovo_fuels');if(r&&r.value){fuels=JSON.parse(r.value);saveFuels();}}catch(e){}}
   render();
@@ -264,9 +287,18 @@ function monthLabel(mk){
   return new Date(+y,+m-1,1).toLocaleDateString('ro-RO',{month:'long',year:'numeric'});
 }
 function dayLabel(ds){return new Date(ds).toLocaleDateString('ro-RO',{weekday:'long',day:'numeric',month:'long'});}
+
 function calcDay(d){
-  const c=parseFloat(d.comenzi)||0,b=parseFloat(d.bonusuri)||0;
-  return{comenzi:c,bonusuri:b,total:c+b};
+  const c=parseFloat(d.comenzi)||0,b=parseFloat(d.bonusuri)||0,total=c+b;
+  return{comenzi:c,bonusuri:b,total,sef:0,net:total};
+}
+// Calculate a week's net: if ANY day in week has cu_sef, apply 10% on full week brut, then subtract 220 CM
+function calcWeek(wDays){
+  const brut=wDays.reduce((a,d)=>a+calcDay(d).total,0);
+  const hasSef=wDays.some(d=>d.cu_sef===true||d.cu_sef==='true');
+  const sef=hasSef?brut*SEF_PCT:0;
+  const net=brut-sef-CARTE_MUNCA;
+  return{brut,hasSef,sef,net};
 }
 function calcFuel(f){
   const l=parseFloat(f.litri)||0,p=parseFloat(f.pret_litru)||0,total=l*p;
@@ -274,9 +306,8 @@ function calcFuel(f){
   const dec=firma?total*FUEL_RATE:0;
   return{litri:l,pret:p,total,decontare:dec,net:total-dec,pe_firma:firma};
 }
-function calcSrv(s){
-  return(s.items||[]).reduce((a,i)=>a+(parseFloat(i.pret)||0),0);
-}
+function calcSrv(s){return(s.items||[]).reduce((a,i)=>a+(parseFloat(i.pret)||0),0);}
+
 function groupDays(){
   const r={};
   days.forEach(d=>{const mk=getMonthKey(d.data),wk=getWeekKey(d.data);if(!r[mk])r[mk]={};if(!r[mk][wk])r[mk][wk]=[];r[mk][wk].push(d);});
@@ -293,15 +324,11 @@ function getSrvMonths(){
   return sm;
 }
 
-// deductions per month
-function monthDeductions(mk){
-  // carte munca per saptamana cu zile in luna asta
-  const grouped=groupDays();
-  const mW=grouped[mk]||{};
-  const carteMunca=Object.keys(mW).length*CARTE_MUNCA;
-  // medicina per luna (fixed)
-  const medicina=MEDICINA;
-  return{carteMunca,medicina,total:carteMunca+medicina};
+// dominant firm color for a list of days
+function dominantFirm(dayList){
+  const cnt={glovo:0,wolt:0,bolt:0};
+  dayList.forEach(d=>cnt[d.firma||'glovo']++);
+  return Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0];
 }
 
 function switchTab(t){
@@ -328,17 +355,19 @@ function render(){
 function firmBtnHtml(id){
   const f=FIRMS[id];
   const active=addFirm===id;
-  return`<button class="firm-btn${active?' active':''}" style="--fc:${f.color}" onclick="selectFirm('${id}')">
-    <span class="firm-logo">${f.emoji}</span>
-    <span class="firm-name">${f.name}</span>
+  return`<button class="firm-btn${active?' '+id+'-active':''}" onclick="selectFirm('${id}')">
+    <div class="firm-logo-wrap">${LOGOS[id]}</div>
+    <span class="firm-name-lbl">${f.name}</span>
   </button>`;
 }
 
 function selectFirm(id){
   addFirm=id;
-  document.querySelectorAll('.firm-btn').forEach(b=>b.classList.remove('active'));
-  const btns=document.querySelectorAll('.firm-btn');
-  ['glovo','wolt','bolt'].forEach((f,i)=>{if(f===id)btns[i].classList.add('active');btns[i].style.setProperty('--fc',FIRMS[f].color);});
+  document.querySelectorAll('.firm-btn').forEach((b,i)=>{
+    const fid=['glovo','wolt','bolt'][i];
+    b.className='firm-btn'+(fid===id?' '+fid+'-active':'');
+  });
+  updateDayPreview();
 }
 
 function renderAdd(){
@@ -346,6 +375,7 @@ function renderAdd(){
   const editing=editDayId!==null;
   const d=editing?days.find(x=>x.id===editDayId):null;
   if(editing&&d)addFirm=d.firma||'glovo';
+  const hasSef=editing&&d?(d.cu_sef===true||d.cu_sef==='true'):false;
 
   c.innerHTML=`
     <div class="card">
@@ -361,8 +391,12 @@ function renderAdd(){
         <div class="field" style="margin-bottom:0"><label>Ore lucrate</label><input type="number" id="f-ore" placeholder="0" min="0" step="0.5"/></div>
       </div>
       <div class="field" style="margin-top:12px"><label>Bonusuri / Tip-uri (RON)</label><input type="number" id="f-bonusuri" placeholder="0.00" min="0" step="0.01"/></div>
+      <div class="toggle-row" onclick="toggleSef()" id="sef-toggle">
+        <span>Deducere șef 10%</span>
+        <div class="toggle-switch${hasSef?' on':''}" id="sef-switch"></div>
+      </div>
       <div class="field"><label>Notițe</label><textarea id="f-nota" placeholder="Ex: vreme rea, zone aglomerate..."></textarea></div>
-      <div class="notice">Carte de muncă <b>220 RON</b> dedusă săptămânal · Medicină <b>220 RON</b> + Șef <b>10%</b> deduse lunar</div>
+      <div class="notice">Carte de muncă <b>220 RON</b> dedusă automat săptămânal</div>
       <div id="day-preview"></div>
       <button class="btn btn-or" id="add-btn" onclick="submitDay()"></button>
       <div id="day-toast" style="display:none" class="toast"></div>
@@ -385,14 +419,29 @@ function renderAdd(){
   updateDayPreview();
 }
 
+function toggleSef(){
+  const sw=document.getElementById('sef-switch');
+  if(!sw)return;
+  sw.classList.toggle('on');
+  updateDayPreview();
+}
+function getSef(){const sw=document.getElementById('sef-switch');return sw?sw.classList.contains('on'):false;}
+
 function updateDayPreview(){
   const c=parseFloat(document.getElementById('f-comenzi')?.value)||0;
   const b=parseFloat(document.getElementById('f-bonusuri')?.value)||0;
+  const hasSef=getSef();
+  const total=c+b;
   const el=document.getElementById('day-preview');if(!el)return;
-  el.innerHTML=c>0?`<div class="preview">
+  const f=FIRMS[addFirm];
+  const sefNote=hasSef
+    ?`<div class="pr" style="margin-top:6px;border-top:1px dashed #222;padding-top:6px"><span style="color:#f87171;font-size:12px">⚠ Săptămâna are sold: 10% șef + 220 CM deduse la nivel de săptămână</span></div>`
+    :`<div class="pr" style="margin-top:6px;border-top:1px dashed #222;padding-top:6px"><span style="color:#555;font-size:12px">Fără sold: doar 220 RON CM dedus săptămânal</span></div>`;
+  el.innerHTML=c>0?`<div class="preview" style="border-color:${f.border}">
     <div class="pr"><span>Comenzi</span><span>+${fmt(c)} RON</span></div>
     ${b>0?`<div class="pr"><span>Bonusuri</span><span>+${fmt(b)} RON</span></div>`:''}
-    <div class="pr hl"><span>Total zi</span><span style="color:#4ade80">+${fmt(c+b)} RON</span></div>
+    <div class="pr hl"><span>Total zi</span><span style="color:#4ade80">+${fmt(total)} RON</span></div>
+    ${sefNote}
   </div>`:'';
 }
 
@@ -403,9 +452,10 @@ function submitDay(){
   const bonusuri=document.getElementById('f-bonusuri').value;
   const nota=document.getElementById('f-nota').value;
   const firma=addFirm;
+  const cu_sef=getSef();
   if(!comenzi)return;
-  if(editDayId!==null){days=days.map(d=>d.id===editDayId?{id:editDayId,data,comenzi,ore,bonusuri,nota,firma}:d);editDayId=null;}
-  else days.push({id:Date.now(),data,comenzi,ore,bonusuri,nota,firma});
+  if(editDayId!==null){days=days.map(d=>d.id===editDayId?{id:editDayId,data,comenzi,ore,bonusuri,nota,firma,cu_sef}:d);editDayId=null;}
+  else days.push({id:Date.now(),data,comenzi,ore,bonusuri,nota,firma,cu_sef});
   saveDays();
   renderAdd();
   const t=document.getElementById('day-toast');
@@ -414,6 +464,11 @@ function submitDay(){
 function cancelEditDay(){editDayId=null;renderAdd();}
 
 // ── HISTORY ──────────────────────────────────────────────────
+function firmBadgeHtml(firma){
+  const f=FIRMS[firma||'glovo'];
+  return`<span class="firm-badge" style="background:${f.bg};border:1px solid ${f.border};color:${f.color}">${LOGO_SM[firma||'glovo']} ${f.name}</span>`;
+}
+
 function renderHistory(){
   const grouped=groupDays();
   const monthKeys=Object.keys(grouped).sort().reverse();
@@ -423,13 +478,20 @@ function renderHistory(){
     return monthKeys.map(mk=>{
       const mW=grouped[mk],mDays=Object.values(mW).flat();
       const brut=mDays.reduce((a,d)=>a+calcDay(d).total,0);
-      const wc=Object.keys(mW).length,cm=wc*CARTE_MUNCA;
-      const sef=brut*SEF_PCT;
-      const net=brut-cm-MEDICINA-sef;
+      const wc=Object.keys(mW).length;
+      // week-level: each week calc its own sef+CM
+      const allWeekNets=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).net,0);
+      const net=allWeekNets;
+      const totalSef=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).sef,0);
+      const cm=wc*CARTE_MUNCA;
       const ore=mDays.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
-      return`<div class="month-row" onclick="navToMonth('${mk}')">
+      const dom=dominantFirm(mDays);
+      const fc=FIRMS[dom];
+      return`<div class="month-row" style="border-left:3px solid ${fc.color}40" onclick="navToMonth('${mk}')">
         <div>
-          <div class="month-row-name">${monthLabel(mk)}</div>
+          <div class="month-row-name" style="display:flex;align-items:center;gap:7px">
+            <span style="display:inline-flex">${LOGO_SM[dom]}</span>${monthLabel(mk)}
+          </div>
           <div class="month-row-sub">${wc} săpt · ${mDays.length} zile · ${ore} ore</div>
         </div>
         <div class="month-row-right">
@@ -446,32 +508,35 @@ function renderHistory(){
     const wKeys=Object.keys(mW).sort().reverse();
     const mDays=Object.values(mW).flat();
     const brut=mDays.reduce((a,d)=>a+calcDay(d).total,0);
-    const cm=wKeys.length*CARTE_MUNCA,sef=brut*SEF_PCT;
-    const net=brut-cm-MEDICINA-sef;
+    const cm=wKeys.length*CARTE_MUNCA;
+    const net=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).net,0);
+    const totalSef=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).sef,0);
+    const dom=dominantFirm(mDays);
+    const fc=FIRMS[dom];
     return`
       <div class="breadcrumb">
         <button class="bc-btn" onclick="navToMonths()">Istoric</button>
         <span class="bc-sep">›</span>
         <span style="color:#555">${monthLabel(mk)}</span>
       </div>
-      <div class="week-summary" style="margin-bottom:12px">
-        <div class="ws-title">Rezumat lună</div>
+      <div class="week-summary" style="margin-bottom:12px;border-left:3px solid ${fc.color}50">
+        <div class="ws-title" style="display:flex;align-items:center;gap:6px">${LOGO_SM[dom]} Rezumat lună</div>
         <div class="ws-grid">
           <div class="ws-item">Brut: <b>${fmt(brut)} RON</b></div>
-          <div class="ws-item red">Șef 10%: <b>-${fmt(sef)} RON</b></div>
           <div class="ws-item orange">Carte muncă: <b>-${cm} RON</b></div>
-          <div class="ws-item orange">Medicină: <b>-${MEDICINA} RON</b></div>
+          ${totalSef>0?`<div class="ws-item red">Șef 10% (săpt cu sold): <b>-${fmt(totalSef)} RON</b></div>`:'<div class="ws-item" style="color:#333">Nicio săpt cu sold</div>'}
           <div class="ws-item green">Net rămas: <b>${fmt(net)} RON</b></div>
         </div>
       </div>
       ${wKeys.map(wk=>{
         const wD=mW[wk].slice().sort((a,b)=>a.data.localeCompare(b.data));
-        const wB=wD.reduce((a,d)=>a+calcDay(d).total,0),wN=wB-CARTE_MUNCA;
+        const {brut:wB,sef:wSef,net:wN,hasSef:wHasSef}=calcWeek(wD);
         const wO=wD.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
-        return`<div class="week-row" onclick="navToWeek('${mk}','${wk}')">
+        const wDom=dominantFirm(wD),wfc=FIRMS[wDom];
+        return`<div class="week-row" style="border-left:3px solid ${wfc.color}40" onclick="navToWeek('${mk}','${wk}')">
           <div>
-            <div class="week-row-label">${weekLabel(wk)}</div>
-            <div class="week-row-sub">${wD.length} zile · ${wO} ore · brut ${fmtInt(Math.round(wB))} RON</div>
+            <div class="week-row-label" style="display:flex;align-items:center;gap:6px">${LOGO_SM[wDom]} ${weekLabel(wk)}</div>
+            <div class="week-row-sub">${wD.length} zile · ${wO} ore</div>
           </div>
           <div class="week-row-right">
             <div class="week-row-net">${fmtInt(Math.round(wN))} RON</div>
@@ -485,8 +550,9 @@ function renderHistory(){
   if(histNav&&histNav.mk){
     const{mk,wk}=histNav,g2=groupDays();
     const wD=((g2[mk]||{})[wk]||[]).slice().sort((a,b)=>a.data.localeCompare(b.data));
-    const wB=wD.reduce((a,d)=>a+calcDay(d).total,0),wN=wB-CARTE_MUNCA;
+    const {brut:wB,sef:wSef,net:wN,hasSef:wHasSef}=calcWeek(wD);
     const wO=wD.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
+    const wDom=dominantFirm(wD),wfc=FIRMS[wDom];
     return`
       <div class="breadcrumb">
         <button class="bc-btn" onclick="navToMonths()">Istoric</button>
@@ -495,10 +561,11 @@ function renderHistory(){
         <span class="bc-sep">›</span>
         <span style="color:#555">${weekLabel(wk)}</span>
       </div>
-      <div class="week-summary">
-        <div class="ws-title">Rezumat săptămână</div>
+      <div class="week-summary" style="border-left:3px solid ${wfc.color}50">
+        <div class="ws-title" style="display:flex;align-items:center;gap:6px">${LOGO_SM[wDom]} Rezumat săptămână</div>
         <div class="ws-grid">
           <div class="ws-item">Brut: <b>${fmt(wB)} RON</b></div>
+          ${wHasSef?`<div class="ws-item red">Șef 10% (sold): <b>-${fmt(wSef)} RON</b></div>`:`<div class="ws-item" style="color:#333">Fără sold (no 10%)</div>`}
           <div class="ws-item orange">Carte muncă: <b>-${CARTE_MUNCA} RON</b></div>
           <div class="ws-item">Ore lucrate: <b>${wO} h</b></div>
           <div class="ws-item green">Net săpt: <b>${fmt(wN)} RON</b></div>
@@ -507,13 +574,14 @@ function renderHistory(){
       ${wD.map(d=>{
         const{comenzi,bonusuri,total}=calcDay(d);
         const f=FIRMS[d.firma||'glovo'];
-        return`<div class="day-card">
+        return`<div class="day-card" style="border-left:3px solid ${f.color}40">
           <div class="day-hdr">
             <div>
               <div class="day-title">${dayLabel(d.data)}</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px;">
-                <span style="display:inline-flex;align-items:center;gap:3px;background:${f.bg};border:1px solid ${f.color}22;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;color:${f.color}">${f.emoji} ${f.name}</span>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+                ${firmBadgeHtml(d.firma||'glovo')}
                 ${d.ore?`<span style="font-size:10px;color:#333">${d.ore}h</span>`:''}
+                ${d.cu_sef?`<span style="font-size:10px;color:#f87171;background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);padding:2px 6px;border-radius:4px;">−10% șef</span>`:''}
               </div>
             </div>
             <div class="day-actions">
@@ -582,17 +650,8 @@ function renderFuel(){
   document.getElementById('fuel-list').innerHTML=renderFuelList();
 }
 
-function toggleFuelFirma(){
-  const sw=document.getElementById('firma-switch');
-  if(!sw)return;
-  sw.classList.toggle('on');
-  updateFuelPreview();
-}
-
-function getFuelFirma(){
-  const sw=document.getElementById('firma-switch');
-  return sw?sw.classList.contains('on'):true;
-}
+function toggleFuelFirma(){const sw=document.getElementById('firma-switch');if(sw){sw.classList.toggle('on');updateFuelPreview();}}
+function getFuelFirma(){const sw=document.getElementById('firma-switch');return sw?sw.classList.contains('on'):true;}
 
 function updateFuelPreview(){
   const l=parseFloat(document.getElementById('ff-litri')?.value)||0;
@@ -633,12 +692,11 @@ function renderFuelList(){
         </div>
         ${mF.slice().sort((a,b)=>b.data.localeCompare(a.data)).map(f=>{
           const fc=calcFuel(f);
-          const firma=fc.pe_firma;
           return`<div style="background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:12px;margin-bottom:7px;">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;">
               <div>
                 <div style="font-size:13px;font-weight:600;color:#bbb">${f.data}</div>
-                <div style="font-size:11px;color:#3a3a3a;margin-top:2px">${fmt(fc.litri,2)} L · ${fmt(fc.pret,2)} RON/L${firma?' · <span style="color:#0ea5e9">pe firmă</span>':' · <span style="color:#555">personal</span>'}</div>
+                <div style="font-size:11px;color:#3a3a3a;margin-top:2px">${fmt(fc.litri,2)} L · ${fmt(fc.pret,2)} RON/L · ${fc.pe_firma?'<span style="color:#0ea5e9">pe firmă</span>':'<span style="color:#555">personal</span>'}</div>
               </div>
               <div style="display:flex;gap:5px;">
                 <button style="background:#161616;border:1px solid #1e1e1e;border-radius:6px;color:#3a3a3a;padding:4px 8px;font-size:11px;cursor:pointer;" onclick="editFuel(${f.id})">✏️</button>
@@ -647,7 +705,7 @@ function renderFuelList(){
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
               <div style="background:#0d0d0d;border-radius:7px;padding:7px 9px;"><div class="sl">Total bon</div><div class="sv">${fmt(fc.total)} RON</div></div>
-              ${firma?`<div style="background:rgba(14,165,233,.05);border-radius:7px;padding:7px 9px;"><div class="sl">Decontare 5%</div><div class="sv" style="color:#0ea5e9">-${fmt(fc.decontare)} RON</div></div>`:'<div style="background:#0d0d0d;border-radius:7px;padding:7px 9px;"><div class="sl">Tip</div><div class="sv" style="color:#555">Personal</div></div>'}
+              ${fc.pe_firma?`<div style="background:rgba(14,165,233,.05);border-radius:7px;padding:7px 9px;"><div class="sl">Decontare 5%</div><div class="sv" style="color:#0ea5e9">-${fmt(fc.decontare)} RON</div></div>`:'<div style="background:#0d0d0d;border-radius:7px;padding:7px 9px;"><div class="sl">Tip</div><div class="sv" style="color:#555">Personal</div></div>'}
               <div style="background:rgba(14,165,233,.05);border-radius:7px;padding:7px 9px;grid-column:span 2;"><div class="sl">Cost real</div><div class="sv" style="color:#0ea5e9;font-size:15px;">${fmt(fc.net)} RON</div></div>
             </div>
             ${f.nota?`<div class="day-note" style="margin-top:9px;">${f.nota}</div>`:''}
@@ -730,11 +788,9 @@ function renderSrvItems(){
     </div>`).join('');
   updateSrvPreview();
 }
-
 function updateSrvItem(i,field,val){srvItems[i][field]=val;updateSrvPreview();}
 function addSrvItem(){srvItems.push({name:'',pret:''});renderSrvItems();}
 function removeSrvItem(i){srvItems.splice(i,1);renderSrvItems();}
-
 function updateSrvPreview(){
   const total=srvItems.reduce((a,i)=>a+(parseFloat(i.pret)||0),0);
   const el=document.getElementById('srv-preview');if(!el)return;
@@ -743,7 +799,6 @@ function updateSrvPreview(){
     <div class="pr hl"><span>Total bon service</span><span style="color:#f87171">-${fmt(total)} RON</span></div>
   </div>`:'';
 }
-
 function submitService(){
   const data=document.getElementById('sv-data').value;
   const nota=document.getElementById('sv-nota').value;
@@ -757,7 +812,6 @@ function submitService(){
   const t=document.getElementById('srv-toast');
   if(t){t.textContent='Bon service salvat!';t.style.background='#0f2e18';t.style.color='#4ade80';t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
 }
-
 function cancelEditSrv(){editSrvId=null;srvItems=[{name:'',pret:''}];renderService();}
 function editSrv(id){editSrvId=id;renderService();}
 
@@ -801,7 +855,6 @@ function renderSrvList(){
     </div>`;
   }).join('');
 }
-
 function toggleSrvMonth(mk){
   const body=document.getElementById('svbody-'+mk),chev=document.getElementById('svchev-'+mk);
   if(!body)return;
@@ -819,12 +872,10 @@ function renderStats(){
   const weekSet=new Set(days.map(d=>getWeekKey(d.data)));
   const totalBrut=days.reduce((a,d)=>a+calcDay(d).total,0);
   const totalCM=weekSet.size*CARTE_MUNCA;
-
-  // group by month for medicina + sef
-  const monthKeys=Object.keys(grouped);
-  const totalMedicina=monthKeys.length*MEDICINA;
-  const totalSef=totalBrut*SEF_PCT;
-  const totalNet=totalBrut-totalCM-totalMedicina-totalSef;
+  // compute sef and net at week level
+  const grouped2=groupDays();
+  let totalSef=0,totalNet=0;
+  Object.values(grouped2).forEach(mW=>Object.values(mW).forEach(wD=>{const w=calcWeek(wD);totalSef+=w.sef;totalNet+=w.net;}));
 
   const totalFuelNet=fuels.reduce((a,f)=>a+calcFuel(f).net,0);
   const totalFuelDec=fuels.reduce((a,f)=>a+calcFuel(f).decontare,0);
@@ -837,15 +888,13 @@ function renderStats(){
   const sm=getSrvMonths();
   const allMK=[...new Set([...Object.keys(grouped),...Object.keys(fm),...Object.keys(sm)])].sort().reverse();
 
-  // chart data (last 6 months)
+  // chart
   const chartMK=allMK.slice(0,6).reverse();
   const chartData=chartMK.map(mk=>{
     const mW=grouped[mk]||{};
     const mDays=Object.values(mW).flat();
     const brut=mDays.reduce((a,d)=>a+calcDay(d).total,0);
-    const cm=Object.keys(mW).length*CARTE_MUNCA;
-    const sef=brut*SEF_PCT;
-    const net=brut-cm-MEDICINA-sef;
+    const net=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).net,0);
     const fNet=(fm[mk]||[]).reduce((a,f)=>a+calcFuel(f).net,0);
     const sNet=(sm[mk]||[]).reduce((a,s)=>a+calcSrv(s),0);
     return{mk,profit:net-fNet-sNet};
@@ -871,11 +920,11 @@ function renderStats(){
 
   // firm breakdown
   const firmTotals={glovo:0,wolt:0,bolt:0};
-  days.forEach(d=>{const f=d.firma||'glovo';firmTotals[f]+=(calcDay(d).total||0);});
+  days.forEach(d=>{const fk=d.firma||'glovo';firmTotals[fk]+=(calcDay(d).total||0);});
   const firmHtml=Object.entries(firmTotals).filter(([,v])=>v>0).map(([k,v])=>{
     const f=FIRMS[k];
-    return`<div class="sc-item" style="border-left:3px solid ${f.color}20">
-      <div class="sc-il">${f.emoji} ${f.name}</div>
+    return`<div class="sc-item" style="background:${f.bg};border:1px solid ${f.border}">
+      <div class="sc-il" style="display:flex;align-items:center;gap:4px">${LOGO_SM[k]} <span style="color:${f.color}">${f.name}</span></div>
       <div class="sc-iv" style="color:${f.color}">${fmtInt(Math.round(v))} RON</div>
     </div>`;
   }).join('');
@@ -892,17 +941,17 @@ function renderStats(){
       <div class="sc-lbl">Incasări brut total</div>
       <div class="sc-val">${fmtInt(Math.round(totalBrut))} <span>RON</span></div>
       <div class="sc-grid">
-        <div class="sc-item"><div class="sc-il">Carte muncă</div><div class="sc-iv" style="color:#e87e00">-${fmtInt(totalCM)} RON</div></div>
-        <div class="sc-item"><div class="sc-il">Medicină muncii</div><div class="sc-iv" style="color:#e87e00">-${fmtInt(totalMedicina)} RON</div></div>
-        <div class="sc-item"><div class="sc-il">Profit șef (10%)</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(totalSef))} RON</div></div>
+        <div class="sc-item"><div class="sc-il">Carte muncă total</div><div class="sc-iv" style="color:#e87e00">-${fmtInt(totalCM)} RON</div></div>
+        ${totalSef>0?`<div class="sc-item"><div class="sc-il">Șef 10% total</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(totalSef))} RON</div></div>`:''}
         <div class="sc-item"><div class="sc-il">Net după deduceri</div><div class="sc-iv" style="color:#4ade80">${fmtInt(Math.round(totalNet))} RON</div></div>
         <div class="sc-item"><div class="sc-il">Zile lucrate</div><div class="sc-iv">${days.length}</div></div>
         <div class="sc-item"><div class="sc-il">Total ore</div><div class="sc-iv">${totalOre} h</div></div>
+        <div class="sc-item"><div class="sc-il">Săptămâni</div><div class="sc-iv">${weekSet.size}</div></div>
       </div>
     </div>
 
     ${firmHtml?`<div class="sum-card">
-      <div class="sc-lbl">Pe firmă</div>
+      <div class="sc-lbl">Net pe firmă</div>
       <div class="sc-grid">${firmHtml}</div>
     </div>`:''}
 
@@ -934,23 +983,27 @@ function renderStats(){
       const mD=Object.values(mW).flat();
       const brut=mD.reduce((a,d)=>a+calcDay(d).total,0);
       const cm=Object.keys(mW).length*CARTE_MUNCA;
-      const sef=brut*SEF_PCT;
-      const salNet=brut-cm-MEDICINA-sef;
+      const sef=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).sef,0);
+      const salNet=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).net,0);
       const fNet=mF.reduce((a,f)=>a+calcFuel(f).net,0);
       const sNet=mS.reduce((a,s)=>a+calcSrv(s),0);
       const mp=salNet-fNet-sNet;
+      const dom=mD.length>0?dominantFirm(mD):'glovo';
+      const fc=FIRMS[dom];
       return`<div class="sum-card" style="background:${mp>=0?'#0a160d':'#160a0a'};border:1px solid ${mp>=0?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px;">
           <div>
-            <div style="font-size:14px;font-weight:600;color:#666;text-transform:capitalize">${monthLabel(mk)}</div>
+            <div style="font-size:14px;font-weight:600;color:#666;display:flex;align-items:center;gap:6px;text-transform:capitalize">
+              ${mD.length>0?LOGO_SM[dom]:''}${monthLabel(mk)}
+            </div>
             <div style="font-size:11px;color:#2a2a2a;margin-top:2px">${mD.length} zile · ${Object.keys(mW).length} săpt</div>
           </div>
           <div style="font-size:21px;font-weight:700;color:${mp>=0?'#4ade80':'#f87171'}">${fmtInt(Math.round(mp))} RON</div>
         </div>
         <div class="sc-grid">
           ${mD.length>0?`<div class="sc-item"><div class="sc-il">Brut</div><div class="sc-iv">${fmtInt(Math.round(brut))} RON</div></div>`:''}
-          ${mD.length>0?`<div class="sc-item"><div class="sc-il">Șef 10%</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(sef))} RON</div></div>`:''}
-          ${mD.length>0?`<div class="sc-item"><div class="sc-il">CM + Med</div><div class="sc-iv" style="color:#e87e00">-${cm+MEDICINA} RON</div></div>`:''}
+          ${sef>0?`<div class="sc-item"><div class="sc-il">Șef 10%</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(sef))} RON</div></div>`:''}
+          ${mD.length>0?`<div class="sc-item"><div class="sc-il">Carte muncă</div><div class="sc-iv" style="color:#e87e00">-${cm} RON</div></div>`:''}
           ${mD.length>0?`<div class="sc-item"><div class="sc-il">Sal net</div><div class="sc-iv" style="color:#4ade80">${fmtInt(Math.round(salNet))} RON</div></div>`:''}
           ${mF.length>0?`<div class="sc-item"><div class="sc-il">Carburant</div><div class="sc-iv" style="color:#0ea5e9">-${fmtInt(Math.round(fNet))} RON</div></div>`:''}
           ${mS.length>0?`<div class="sc-item"><div class="sc-il">Service</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(sNet))} RON</div></div>`:''}
