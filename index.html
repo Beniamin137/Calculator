@@ -420,7 +420,10 @@ function toggleSef(){
   sw.classList.toggle('on');
   updateDayPreview();
 }
-function getSef(){const sw=document.getElementById('sef-switch');return sw?sw.classList.contains('on'):false;}
+function getSef(){
+  const sw=document.getElementById('sef-switch');
+  return sw?sw.classList.contains('on'):false;
+}
 
 function updateDayPreview(){
   const c=parseFloat(document.getElementById('f-comenzi')?.value)||0;
