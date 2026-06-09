@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Calculator</title>
+  <link rel="icon" type="image/png" href="logo.png">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -13,7 +14,7 @@
     .hdr{background:linear-gradient(135deg,#1a1a1a 0%,#222 100%);padding:24px 20px 18px;position:relative;overflow:hidden;border-bottom:1px solid #1f1f1f;}
     .hdr::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.03);pointer-events:none;}
     .hdr h1{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:2px;position:relative;text-transform:uppercase;}
-    .hdr-sub{font-size:12px;color:#444;margin-top:3px;position:relative;font-weight:400;}
+    .hdr-sub{font-size:12px;color:#a4a4a4;margin-top:3px;position:relative;font-weight:400;}
     .badges{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;position:relative;}
     .badge{background:#161616;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:500;color:#555;border:1px solid #222;}
 
@@ -97,7 +98,7 @@
     .day-note{margin-top:9px;font-size:12px;font-weight:400;color:#666;line-height:1.6;padding:9px 11px;background:#111;border-radius:7px;border-left:2px solid #222;}
 
     .week-summary{background:#0a0a0a;border:1px solid #181818;border-radius:10px;padding:13px 15px;margin-bottom:11px;}
-    .ws-title{font-size:12px;font-weight:600;color:#555;margin-bottom:9px;}
+    .ws-title{font-size:12px;font-weight:500;color:#444;margin-bottom:9px;}
     .ws-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
     .ws-item{font-size:12px;font-weight:400;color:#444;}
     .ws-item b{font-weight:600;color:#666;}
@@ -125,7 +126,7 @@
     .sc-item{background:#0a0a0a;border-radius:8px;padding:9px 11px;}
     .sc-il{font-size:10px;font-weight:500;color:#333;margin-bottom:3px;}
     .sc-iv{font-size:14px;font-weight:600;color:#777;}
-    .sec-title{font-size:11px;font-weight:500;color:#333;letter-spacing:.5px;margin:16px 0 9px;text-transform:uppercase;}
+    .sec-title fountains{font-size:11px;font-weight:500;color:#333;letter-spacing:.5px;margin:16px 0 9px;text-transform:uppercase;}
 
     .firm-sel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
     .firm-btn{padding:12px 6px 10px;border-radius:10px;border:2px solid #1e1e1e;background:#0a0a0a;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:5px;}
@@ -164,14 +165,6 @@
 
     .cui{display:inline-flex;align-items:center;gap:6px;background:#111;border:1px solid #1c1c1c;border-radius:7px;padding:6px 12px;font-size:12px;font-weight:500;color:#0ea5e9;margin-bottom:12px;}
 
-    .chart-wrap{background:#0a0a0a;border:1px solid #191919;border-radius:12px;padding:16px;margin-bottom:12px;overflow:hidden;}
-    .chart-title{font-size:12px;font-weight:500;color:#444;margin-bottom:14px;}
-    .bar-chart{display:flex;align-items:flex-end;gap:6px;height:120px;}
-    .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;}
-    .bar-val{font-size:9px;color:#333;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center;}
-    .bar{width:100%;border-radius:4px 4px 0 0;min-height:2px;transition:height .3s;}
-    .bar-lbl{font-size:9px;color:#333;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center;}
-
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
     .modal-box{background:#141414;border:1px solid #222;border-radius:13px;padding:22px;max-width:300px;width:100%;text-align:center;}
     .modal-box p{font-size:13px;font-weight:400;color:#888;line-height:1.6;margin-bottom:18px;}
@@ -183,18 +176,18 @@
     <h1>Calculator</h1>
     <div class="hdr-sub">Venituri · Carburant · Service · Concediu</div>
     <div class="badges">
-      <span class="badge">CM 220 RON/săpt</span>
-      <span class="badge">Șef 10% automat</span>
-      <span class="badge">Glovo/Bolt: Luni · Wolt: Joi</span>
+      <span class="badge">Carte de Munca 220 RON/săpt</span>
+      <span class="badge">10% Darius</span>
+      <span class="badge">Inceput saptamană Glovo/Bolt: Luni · Wolt: Joi</span>
     </div>
   </div>
   <div class="tabs">
-    <button class="tb active" id="tab-add" onclick="switchTab('add')">+ Adaugă</button>
-    <button class="tb" id="tab-history" onclick="switchTab('history')">Istoric</button>
-    <button class="tb" id="tab-fuel" onclick="switchTab('fuel')">Carburant</button>
-    <button class="tb" id="tab-service" onclick="switchTab('service')">Service</button>
-    <button class="tb" id="tab-vacation" onclick="switchTab('vacation')">Concediu</button>
-    <button class="tb" id="tab-stats" onclick="switchTab('stats')">Sumar</button>
+    <button class="tb active" id="tab-add" onclick="switchTab('add')">Adaugă ➕</button>
+    <button class="tb" id="tab-history" onclick="switchTab('history')">Istoric 📅</button>
+    <button class="tb" id="tab-fuel" onclick="switchTab('fuel')">Carburant ⛽</button>
+    <button class="tb" id="tab-service" onclick="switchTab('service')">Service 🔧</button>
+    <button class="tb" id="tab-vacation" onclick="switchTab('vacation')">Concediu 🏖️</button>
+    <button class="tb" id="tab-stats" onclick="switchTab('stats')">Sumar 📊</button>
   </div>
   <div class="content" id="main-content"></div>
   <div id="confirm-modal" style="display:none;" class="modal-overlay">
@@ -291,19 +284,32 @@ function calcDay(d){
   return{comenzi:c,bonusuri:b,total};
 }
 
-function calcWeek(wDays,weekStart){
-  const brut=wDays.reduce((a,d)=>a+calcDay(d).total,0);
-  const hasVacation=isVacationWeek(weekStart);
+function calcWeek(wDays, weekStart) {
+  const brut = wDays.reduce((a, d) => a + calcDay(d).total, 0);
   
-  if(wDays.length===0){
-    const cm=hasVacation?0:CARTE_MUNCA;
-    return{brut:0,sef:0,cm,net:-cm,inVacation:hasVacation,wasWorked:false};
+  if (isVacationWeek(weekStart)) return { brut, sef: 0, cm: 0, net: brut, inVacation: true, wasWorked: wDays.length > 0 };
+
+  // Aflăm prima săptămână absolută în care există vreo încasare în istoric
+  let firstWeekKey = null;
+  if (days && days.length > 0) {
+    const sortedDays = days.slice().sort((a, b) => a.data.localeCompare(b.data));
+    const firstDay = sortedDays[0];
+    const firstFirm = firstDay.firma || 'glovo';
+    firstWeekKey = getWeekKeyForFirm(firstDay.data, firstFirm);
+  }
+
+  // Dacă săptămâna curentă este strict înainte de prima ta încasare reală, înseamnă că nu erai angajat
+  if (firstWeekKey && weekStart < firstWeekKey) {
+    return { brut, sef: 0, cm: 0, net: brut, inVacation: false, wasWorked: wDays.length > 0, preEmployment: true };
+  }
+
+  // Săptămână normală (sau goală) din perioada de angajare
+  if (wDays.length === 0) {
+    return { brut: 0, sef: 0, cm: CARTE_MUNCA, net: -CARTE_MUNCA, inVacation: false, wasWorked: false };
   }
   
-  const sef=brut*SEF_PCT;
-  const dupaSef=brut-sef;
-  const cm=hasVacation?0:CARTE_MUNCA;
-  return{brut,sef,cm,net:dupaSef-cm,inVacation:hasVacation,wasWorked:true};
+  const sef = brut * SEF_PCT;
+  return { brut, sef, cm: CARTE_MUNCA, net: brut - sef - CARTE_MUNCA, inVacation: false, wasWorked: true };
 }
 
 function calcFuel(f){
@@ -339,7 +345,11 @@ function getAllWeeksInMonth(mk, firma){
   const[y,m]=mk.split('-').map(Number);
   const start=new Date(y,m-1,1);
   const end=new Date(y,m,0);
-  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+  
+  const acum=new Date();
+  const limitaZi = (acum.getFullYear() === y && (acum.getMonth() + 1) === m) ? acum : end;
+
+  for(let d=new Date(start); d<=limitaZi; d.setDate(d.getDate()+1)){
     weeks.add(getWeekKeyForFirm(d.toISOString().slice(0,10),firma));
   }
   return Array.from(weeks);
@@ -418,18 +428,18 @@ function renderAdd(){
         <div class="field" style="margin-bottom:0"><label>Câștiguri comenzi (RON)</label><input type="number" id="f-comenzi" placeholder="0.00" min="0" step="0.01"/></div>
         <div class="field" style="margin-bottom:0"><label>Ore lucrate</label><input type="number" id="f-ore" placeholder="0" min="0" step="0.5"/></div>
       </div>
-      <div class="field" style="margin-top:12px"><label>Bonusuri / Tip-uri (RON)</label><input type="number" id="f-bonusuri" placeholder="0.00" min="0" step="0.01"/></div>
+      <div class="field" style="margin-top:12px"><label>Bonusuri / Tips-uri (RON)</label><input type="number" id="f-bonusuri" placeholder="0.00" min="0" step="0.01"/></div>
       <div class="field"><label>Notițe</label><textarea id="f-nota" placeholder="Ex: vreme rea, zone aglomerate..."></textarea></div>
-      <div class="notice">Săptămâna automat: <b>10% șef</b> + <b>220 RON CM</b> dacă lucrezi. Concediu: <b>0 RON CM</b>.</div>
+      <div class="notice">Săptămâna automat: <b> 10% Darius</b> + <b>220 RON</b> dacă lucrezi. Concediu: <b>0 RON</b>.</div>
       <div id="day-preview"></div>
       <button class="btn btn-or" id="add-btn" onclick="submitDay()"></button>
       <div id="day-toast" style="display:none" class="toast"></div>
-      ${editing?`<button class="btn btn-gh" onclick="cancelEditDay()">Anulează editarea</button>`:''}
+      ${editing?`<button class="btn btn-gh" onclick="cancelEditDay()">Anulează editare❌</button>`:''}
     </div>`;
 
   document.getElementById('f-comenzi').addEventListener('input',updateDayPreview);
   document.getElementById('f-bonusuri').addEventListener('input',updateDayPreview);
-  document.getElementById('add-btn').textContent=editing?'Salvează modificările':'Salvează ziua';
+  document.getElementById('add-btn').textContent=editing?'Salvează modificările✅':'Salvează ziua✅';
   if(editing&&d){
     document.getElementById('f-data').value=d.data||today();
     document.getElementById('f-comenzi').value=d.comenzi||'';
@@ -450,7 +460,7 @@ function updateDayPreview(){
   if(!el)return;
   el.innerHTML=total>0?`<div class="preview">
     <div class="pr"><span>Total Brut Zi</span><span>${fmt(total)} RON</span></div>
-    <div class="pr" style="color:#666; font-size:11px">Calculul final (10% șef și 220 lei CM) se aplică automat la totalul săptămânii!</div>
+    <div class="pr" style="color:#666; font-size:11px"></div>
   </div>`:'';
 }
 
@@ -469,7 +479,7 @@ function submitDay(){
   }
   saveDays();renderAdd();
   const t=document.getElementById('day-toast');
-  if(t){t.textContent='Zi salvată cu succes!';t.style.background='#1a1200';t.style.color='#F5B60A';t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
+  if(t){t.textContent='Zi salvată cu succes!✅';t.style.background='#333333';t.style.color='#FFFFFF';t.style.display='block';setTimeout(()=>t.style.display='none',4000);}
 }
 function cancelEditDay(){editDayId=null;renderAdd();}
 
@@ -557,16 +567,16 @@ function renderHistory(){
       ${sortedFwKeys.map(fwk=>{
         const[weekStart,firma]=fwk.split('__');
         const wD=mW[fwk]||[];
-        const{brut:wB,sef:wSef,cm:wCM,net:wN,inVacation:wVac,wasWorked:wWork}=calcWeek(wD,weekStart);
+        const{brut:wB,sef:wSef,cm:wCM,net:wN,inVacation:wVac,wasWorked:wWork,preEmployment:wPre}=calcWeek(wD,weekStart);
         const wO=wD.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
         return`<div class="week-row" style="border-left:3px solid ${FIRMS[firma].color}40" onclick="navToWeek('${mk}','${encodeURIComponent(fwk)}')">
           <div>
             <div class="week-row-label" style="display:flex;align-items:center;gap:6px">${LOGO_SM[firma]} ${weekLabel(weekStart)}</div>
-            <div class="week-row-sub">${wD.length} zile · ${wO} ore${wVac?' · 🏖️ concediu':''}${!wWork&&!wVac?' · ⚠️ nelucrată':''}</div>
+            <div class="week-row-sub">${wD.length} zile · ${wO} ore${wVac?' · 🏖️ concediu':''}${wPre?' · ⏳ Neangajat':''}${!wWork&&!wVac&&!wPre?' · ⚠️ nelucrată':''}</div>
           </div>
           <div class="week-row-right">
             <div class="week-row-net" style="color:${wN>=0?'#4ade80':'#f87171'}">${fmtInt(Math.round(wN))} RON</div>
-            <div class="week-row-meta">${wVac?'scutit CM':(wWork?'-'+fmt(wSef,0)+' șef ':'')+'-'+wCM+' CM'}</div>
+            <div class="week-row-meta">${wPre?'Scutit (Trecut)':wVac?'scutit CM':(wWork?'-'+fmt(wSef,0)+' șef ':'')+'-'+wCM+' CM'}</div>
           </div>
           <span style="color:#2a2a2a;font-size:14px;margin-left:8px">›</span>
         </div>`;
@@ -579,7 +589,7 @@ function renderHistory(){
     const[weekStart,firma]=fwk.split('__');
     const wD=(grouped[mk]||{})[fwk]||[];
     const sortedDays=wD.slice().sort((a,b)=>a.data.localeCompare(b.data));
-    const{brut:wB,sef:wSef,cm:wCM,net:wN,inVacation:wVac,wasWorked:wWork}=calcWeek(wD,weekStart);
+    const{brut:wB,sef:wSef,cm:wCM,net:wN,inVacation:wVac,wasWorked:wWork,preEmployment:wPre}=calcWeek(wD,weekStart);
 
     return`
       <div class="breadcrumb">
@@ -597,8 +607,9 @@ function renderHistory(){
           <div class="ws-item orange">Carte muncă: <b>-${fmtInt(wCM)} RON</b></div>
           <div class="ws-item green">Net: <b>${fmt(wN)} RON</b></div>
         </div>
-        ${wVac?`<div style="font-size:11px;color:#4ade80;margin-top:6px;font-weight:500">🏖️ Săptămână protejată de concediu (fără taxă carte muncă).</div>`:''}
-        ${!wWork&&!wVac?`<div style="font-size:11px;color:#f87171;margin-top:6px;font-weight:500">⚠️ Săptămână nelucrată (se rețin doar cei 220 lei pentru cartea de muncă).</div>`:''}
+        ${wPre?`<div style="font-size:11px;color:#0ea5e9;margin-top:6px;font-weight:500">⏳ Săptămână dinaintea angajării.</div>`:''}
+        ${wVac?`<div style="font-size:11px;color:#4ade80;margin-top:6px;font-weight:500">🏖️ Săptămână de concediu.</div>`:''}
+        ${!wWork&&!wVac&&!wPre?`<div style="font-size:11px;color:#f87171;margin-top:6px;font-weight:500">⚠️ Săptămână nelucrată.</div>`:''}
       </div>
       ${sortedDays.length===0?`<div class="empty">Nicio zi salvată pe această firmă în această săptămână.</div>`:''}
       ${sortedDays.map(d=>{
@@ -616,7 +627,7 @@ function renderHistory(){
           </div>
           <div class="sg">
             <div class="sb"><div class="sl">Comenzi</div><div class="sv">${fmt(d.comenzi||0)}</div></div>
-            <div class="sb"><div class="sl">Bonus / Tip</div><div class="sv">${fmt(d.bonusuri||0)}</div></div>
+            <div class="sb"><div class="sl">Bonus / Tips</div><div class="sv">${fmt(d.bonusuri||0)}</div></div>
           </div>
           <div class="sg" style="margin-top:6px">
             <div class="sb g" style="grid-column: span 2"><div class="sl">Total zi brut</div><div class="sv green">${fmt(dayB)} RON</div></div>
@@ -657,13 +668,13 @@ function renderFuel(){
       <div id="fuel-preview"></div>
       <button class="btn btn-bl" id="fuel-btn" onclick="submitFuel()"></button>
       <div id="fuel-toast" style="display:none" class="toast"></div>
-      ${editing?`<button class="btn btn-gh" onclick="cancelEditFuel()">Anulează editarea</button>`:''}
+      ${editing?`<button class="btn btn-gh" onclick="cancelEditFuel()">Anulează editarea❌</button>`:''}
     </div>
     <div id="fuel-list"></div>`;
 
   document.getElementById('ff-litri').addEventListener('input',updateFuelPreview);
   document.getElementById('ff-pret').addEventListener('input',updateFuelPreview);
-  document.getElementById('fuel-btn').textContent=editing?'Salvează modificările':'Salvează bon';
+  document.getElementById('fuel-btn').textContent=editing?'Salvează modificările✅':'Salvează bon✅';
   if(editing&&ef){
     document.getElementById('ff-data').value=ef.data||today();
     document.getElementById('ff-litri').value=ef.litri||'';
@@ -775,7 +786,7 @@ function renderService(){
     </div>
     <div id="srv-list"></div>`;
 
-  document.getElementById('srv-btn').textContent=editing?'Salvează modificările':'Salvează bon service';
+  document.getElementById('srv-btn').textContent=editing?'Salvează modificările✅':'Salvează bon service✅';
   if(editing&&es){
     document.getElementById('sv-data').value=es.data||today();
     document.getElementById('sv-nota').value=es.nota||'';
@@ -878,7 +889,7 @@ function renderVacation(){
         <div class="field"><label>Dată sfârșit</label><input type="date" id="vc-end"/></div>
       </div>
       <div class="field"><label>Observații / Notițe</label><textarea id="vc-nota" placeholder="Ex: Concediu vară, sărbători..."></textarea></div>
-      <div class="notice">Săptămânile incluse în concediu au taxarea cărții de muncă **anulată complet (0 lei)**.</div>
+      <div class="notice">Săptămânile incluse în concediu nu se platesc.</div>
       <div id="vac-preview"></div>
       <button class="btn btn-gr" id="vac-btn" onclick="submitVacation()"></button>
       <div id="vac-toast" style="display:none" class="toast"></div>
@@ -886,7 +897,7 @@ function renderVacation(){
     </div>
     <div id="vac-list"></div>`;
 
-  document.getElementById('vac-btn').textContent=editing?'Salvează modificările':'Salvează concediu';
+  document.getElementById('vac-btn').textContent=editing?'Salvează modificările✅':'Salvează concediu✅';
   document.getElementById('vc-start').addEventListener('change',updateVacPreview);
   document.getElementById('vc-end').addEventListener('change',updateVacPreview);
   if(editing&&ev){
@@ -1014,7 +1025,7 @@ function doDelete(){
   if(type==='day'){days=days.filter(d=>d.id!==id);saveDays();}
   else if(type==='fuel'){fuels=fuels.filter(f=>f.id!==id);saveFuels();}
   else if(type==='service'){serviceRecs=serviceRecs.filter(s=>s.id!==id);saveSrv();}
-  else if(type==='vac',id){vacations=vacations.filter(v=>v.id!==id);saveVac();}
+  else if(type==='vac'){vacations=vacations.filter(v=>v.id!==id);saveVac();}
   cancelDelete();render();
 }
 
