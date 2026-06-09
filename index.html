@@ -127,7 +127,6 @@
     .sc-iv{font-size:14px;font-weight:600;color:#777;}
     .sec-title{font-size:11px;font-weight:500;color:#333;letter-spacing:.5px;margin:16px 0 9px;text-transform:uppercase;}
 
-    /* FIRM SELECTOR */
     .firm-sel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
     .firm-btn{padding:12px 6px 10px;border-radius:10px;border:2px solid #1e1e1e;background:#0a0a0a;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:5px;}
     .firm-btn:hover{background:#111;}
@@ -140,11 +139,9 @@
     .firm-btn.wolt-active .firm-name-lbl{color:#00C2E0;}
     .firm-btn.bolt-active .firm-name-lbl{color:#34D058;}
 
-    /* FIRM BADGE (inline) */
     .firm-badge{display:inline-flex;align-items:center;gap:5px;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;}
     .firm-badge img{width:14px;height:14px;border-radius:3px;object-fit:contain;}
 
-    /* TOGGLE */
     .toggle-row{display:flex;align-items:center;justify-content:space-between;background:#0a0a0a;border:1px solid #1e1e1e;border-radius:8px;padding:10px 13px;margin-bottom:12px;cursor:pointer;}
     .toggle-row span{font-size:13px;font-weight:400;color:#888;}
     .toggle-switch{width:38px;height:20px;background:#1e1e1e;border-radius:10px;position:relative;transition:background .2s;flex-shrink:0;}
@@ -152,7 +149,6 @@
     .toggle-switch::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s;}
     .toggle-switch.on::after{left:20px;}
 
-    /* SERVICE */
     .service-item-row{display:flex;gap:7px;align-items:center;margin-bottom:8px;}
     .service-item-row input{flex:1;}
     .del-item-btn{background:#161616;border:1px solid #1e1e1e;border-radius:7px;color:#3a3a3a;padding:8px 10px;cursor:pointer;font-size:13px;flex-shrink:0;transition:all .15s;}
@@ -185,11 +181,11 @@
 <div id="gapp">
   <div class="hdr">
     <h1>Calculator</h1>
-    <div class="hdr-sub">Venituri · Carburant · Service</div>
+    <div class="hdr-sub">Venituri · Carburant · Service · Concediu</div>
     <div class="badges">
-      <span class="badge">Carte muncă 220 RON/săpt</span>
-      <span class="badge">Șef 10% (obligatoriu)</span>
-      <span class="badge">Concediu disponibil</span>
+      <span class="badge">CM 220 RON/săpt</span>
+      <span class="badge">Șef 10% automat</span>
+      <span class="badge">Glovo/Bolt: Luni · Wolt: Joi</span>
     </div>
   </div>
   <div class="tabs">
@@ -197,6 +193,7 @@
     <button class="tb" id="tab-history" onclick="switchTab('history')">Istoric</button>
     <button class="tb" id="tab-fuel" onclick="switchTab('fuel')">Carburant</button>
     <button class="tb" id="tab-service" onclick="switchTab('service')">Service</button>
+    <button class="tb" id="tab-vacation" onclick="switchTab('vacation')">Concediu</button>
     <button class="tb" id="tab-stats" onclick="switchTab('stats')">Sumar</button>
   </div>
   <div class="content" id="main-content"></div>
@@ -219,41 +216,28 @@ if(!window.storage){
   };
 }
 
-const CARTE_MUNCA=220, FUEL_RATE=0.05, CUI="RO49730377";
-const SEF_PCT=0.10;
+const CARTE_MUNCA=220,FUEL_RATE=0.05,SRV_RATE=0.05,CUI="RO49730377",SEF_PCT=0.10;
+const FIRM_WEEK_START={glovo:1,wolt:4,bolt:1};
 
-// SVG logos inline
 const LOGOS={
-  glovo:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
-    <rect width="40" height="40" rx="8" fill="#F5B60A"/>
-    <text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#1a1200">G</text>
-  </svg>`,
-  wolt:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
-    <rect width="40" height="40" rx="8" fill="#009DE0"/>
-    <text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#ffffff">W</text>
-  </svg>`,
-  bolt:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
-    <rect width="40" height="40" rx="8" fill="#34D058"/>
-    <text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#0a2010">B</text>
-  </svg>`
+  glovo:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#F5B60A"/><text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#1a1200">G</text></svg>`,
+  wolt:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#009DE0"/><text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#fff">W</text></svg>`,
+  bolt:`<svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#34D058"/><text x="20" y="27" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="18" fill="#0a2010">B</text></svg>`
 };
-
 const LOGO_SM={
   glovo:`<svg viewBox="0 0 20 20" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" rx="4" fill="#F5B60A"/><text x="10" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="#1a1200">G</text></svg>`,
   wolt:`<svg viewBox="0 0 20 20" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" rx="4" fill="#009DE0"/><text x="10" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="#fff">W</text></svg>`,
   bolt:`<svg viewBox="0 0 20 20" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" rx="4" fill="#34D058"/><text x="10" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="#0a2010">B</text></svg>`
 };
-
 const FIRMS={
   glovo:{name:'Glovo',color:'#F5B60A',bg:'rgba(245,182,10,0.08)',border:'rgba(245,182,10,0.2)'},
   wolt:{name:'Wolt',color:'#009DE0',bg:'rgba(0,157,224,0.08)',border:'rgba(0,157,224,0.2)'},
   bolt:{name:'Bolt',color:'#34D058',bg:'rgba(52,208,88,0.08)',border:'rgba(52,208,88,0.2)'}
 };
 
-let days=[],fuels=[],serviceRecs=[],currentTab='add',histNav=null;
-let editDayId=null,editFuelId=null,editSrvId=null,pendingDelete=null;
-let addFirm='glovo';
-let srvItems=[{name:'',pret:''}];
+let days=[],fuels=[],serviceRecs=[],vacations=[],currentTab='add',histNav=null;
+let editDayId=null,editFuelId=null,editSrvId=null,editVacId=null,pendingDelete=null;
+let addFirm='glovo',srvItems=[{name:'',pret:''}];
 
 function fmt(n,dec=2){return Number(n).toLocaleString('ro-RO',{minimumFractionDigits:dec,maximumFractionDigits:dec});}
 function fmtInt(n){return Number(n).toLocaleString('ro-RO');}
@@ -262,26 +246,31 @@ async function loadData(){
   try{const r=await window.storage.get('calc_days');if(r&&r.value)days=JSON.parse(r.value);}catch(e){days=[];}
   try{const r=await window.storage.get('calc_fuels');if(r&&r.value)fuels=JSON.parse(r.value);}catch(e){fuels=[];}
   try{const r=await window.storage.get('calc_service');if(r&&r.value)serviceRecs=JSON.parse(r.value);}catch(e){serviceRecs=[];}
-  if(!days.length){try{const r=await window.storage.get('glovo_days');if(r&&r.value){days=JSON.parse(r.value);saveDays();}}catch(e){}}
-  if(!fuels.length){try{const r=await window.storage.get('glovo_fuels');if(r&&r.value){fuels=JSON.parse(r.value);saveFuels();}}catch(e){}}
+  try{const r=await window.storage.get('calc_vac');if(r&&r.value)vacations=JSON.parse(r.value);}catch(e){vacations=[];}
   render();
 }
 async function saveDays(){try{await window.storage.set('calc_days',JSON.stringify(days));}catch(e){}}
 async function saveFuels(){try{await window.storage.set('calc_fuels',JSON.stringify(fuels));}catch(e){}}
 async function saveSrv(){try{await window.storage.set('calc_service',JSON.stringify(serviceRecs));}catch(e){}}
+async function saveVac(){try{await window.storage.set('calc_vac',JSON.stringify(vacations));}catch(e){}}
 
 function today(){return new Date().toISOString().slice(0,10);}
 function getMonthKey(d){return d?d.slice(0,7):'unknown';}
-function getWeekKey(dateStr){
-  if(!dateStr)return 'unknown';
-  const d=new Date(dateStr),day=d.getDay()===0?7:d.getDay();
-  const mon=new Date(d);mon.setDate(d.getDate()-day+1);
-  return mon.toISOString().slice(0,10);
+
+function getWeekKeyForFirm(dateStr,firma){
+  if(!dateStr)return'unknown';
+  const d=new Date(dateStr);
+  const startDay=FIRM_WEEK_START[firma||'glovo']||1;
+  const dow=d.getDay()===0?7:d.getDay();
+  const diff=((dow-startDay)+7)%7;
+  const ws=new Date(d);ws.setDate(d.getDate()-diff);
+  return ws.toISOString().slice(0,10);
 }
-function weekLabel(wk){
-  const mon=new Date(wk),sun=new Date(wk);sun.setDate(mon.getDate()+6);
+
+function weekLabel(weekStart){
+  const s=new Date(weekStart),e=new Date(weekStart);e.setDate(s.getDate()+6);
   const f=d=>d.toLocaleDateString('ro-RO',{day:'numeric',month:'short'});
-  return f(mon)+' – '+f(sun);
+  return f(s)+' \u2013 '+f(e);
 }
 function monthLabel(mk){
   const[y,m]=mk.split('-');
@@ -289,31 +278,73 @@ function monthLabel(mk){
 }
 function dayLabel(ds){return new Date(ds).toLocaleDateString('ro-RO',{weekday:'long',day:'numeric',month:'long'});}
 
+function isVacationWeek(weekStart){
+  const ws=new Date(weekStart),we=new Date(weekStart);we.setDate(ws.getDate()+6);
+  return vacations.some(v=>{
+    const vs=new Date(v.dataStart),ve=new Date(v.dataSfarsit);
+    return ws<=ve&&we>=vs;
+  });
+}
+
 function calcDay(d){
   const c=parseFloat(d.comenzi)||0,b=parseFloat(d.bonusuri)||0,total=c+b;
-  return{comenzi:c,bonusuri:b,total,sef:0,net:total};
+  return{comenzi:c,bonusuri:b,total};
 }
-// Calculate a week's net: if ANY day in week has cu_sef, apply 10% on full week brut, then subtract 220 CM
-function calcWeek(wDays){
+
+function calcWeek(wDays,weekStart){
   const brut=wDays.reduce((a,d)=>a+calcDay(d).total,0);
-  const hasSef=wDays.some(d=>d.cu_sef===true||d.cu_sef==='true');
-  const sef=hasSef?brut*SEF_PCT:0;
-  const net=brut-sef-CARTE_MUNCA;
-  return{brut,hasSef,sef,net};
+  const hasVacation=isVacationWeek(weekStart);
+  
+  if(wDays.length===0){
+    const cm=hasVacation?0:CARTE_MUNCA;
+    return{brut:0,sef:0,cm,net:-cm,inVacation:hasVacation,wasWorked:false};
+  }
+  
+  const sef=brut*SEF_PCT;
+  const dupaSef=brut-sef;
+  const cm=hasVacation?0:CARTE_MUNCA;
+  return{brut,sef,cm,net:dupaSef-cm,inVacation:hasVacation,wasWorked:true};
 }
+
 function calcFuel(f){
   const l=parseFloat(f.litri)||0,p=parseFloat(f.pret_litru)||0,total=l*p;
   const firma=f.pe_firma===true||f.pe_firma==='true';
   const dec=firma?total*FUEL_RATE:0;
   return{litri:l,pret:p,total,decontare:dec,net:total-dec,pe_firma:firma};
 }
-function calcSrv(s){return(s.items||[]).reduce((a,i)=>a+(parseFloat(i.pret)||0),0);}
+
+function calcSrv(s){
+  const total=(s.items||[]).reduce((a,i)=>a+(parseFloat(i.pret)||0),0);
+  const peFirma=s.pe_firma===true||s.pe_firma==='true';
+  const decontare=peFirma?total*SRV_RATE:0;
+  return{total,decontare,net:total-decontare,pe_firma:peFirma};
+}
 
 function groupDays(){
   const r={};
-  days.forEach(d=>{const mk=getMonthKey(d.data),wk=getWeekKey(d.data);if(!r[mk])r[mk]={};if(!r[mk][wk])r[mk][wk]=[];r[mk][wk].push(d);});
+  days.forEach(d=>{
+    const mk=getMonthKey(d.data);
+    const firma=d.firma||'glovo';
+    const wk=getWeekKeyForFirm(d.data,firma);
+    const fwk=wk+'__'+firma;
+    if(!r[mk])r[mk]={};
+    if(!r[mk][fwk])r[mk][fwk]=[];
+    r[mk][fwk].push(d);
+  });
   return r;
 }
+
+function getAllWeeksInMonth(mk, firma){
+  const weeks=new Set();
+  const[y,m]=mk.split('-').map(Number);
+  const start=new Date(y,m-1,1);
+  const end=new Date(y,m,0);
+  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+    weeks.add(getWeekKeyForFirm(d.toISOString().slice(0,10),firma));
+  }
+  return Array.from(weeks);
+}
+
 function getFuelMonths(){
   const fm={};
   fuels.forEach(f=>{const mk=getMonthKey(f.data);if(!fm[mk])fm[mk]=[];fm[mk].push(f);});
@@ -324,9 +355,8 @@ function getSrvMonths(){
   serviceRecs.forEach(s=>{const mk=getMonthKey(s.data);if(!sm[mk])sm[mk]=[];sm[mk].push(s);});
   return sm;
 }
-
-// dominant firm color for a list of days
 function dominantFirm(dayList){
+  if(!dayList.length)return'glovo';
   const cnt={glovo:0,wolt:0,bolt:0};
   dayList.forEach(d=>cnt[d.firma||'glovo']++);
   return Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0];
@@ -335,7 +365,7 @@ function dominantFirm(dayList){
 function switchTab(t){
   currentTab=t;
   if(t==='history')histNav=null;
-  ['add','history','fuel','service','stats'].forEach(x=>{
+  ['add','history','fuel','service','vacation','stats'].forEach(x=>{
     const el=document.getElementById('tab-'+x);
     if(el)el.className='tb'+(x===t?' active':'');
   });
@@ -349,19 +379,17 @@ function render(){
   else if(currentTab==='history')c.innerHTML=renderHistory();
   else if(currentTab==='fuel')renderFuel();
   else if(currentTab==='service')renderService();
+  else if(currentTab==='vacation')renderVacation();
   else if(currentTab==='stats')c.innerHTML=renderStats();
 }
 
-// ── ADD ──────────────────────────────────────────────────────
 function firmBtnHtml(id){
-  const f=FIRMS[id];
-  const active=addFirm===id;
+  const f=FIRMS[id],active=addFirm===id;
   return`<button class="firm-btn${active?' '+id+'-active':''}" onclick="selectFirm('${id}')">
     <div class="firm-logo-wrap">${LOGOS[id]}</div>
     <span class="firm-name-lbl">${f.name}</span>
   </button>`;
 }
-
 function selectFirm(id){
   addFirm=id;
   document.querySelectorAll('.firm-btn').forEach((b,i)=>{
@@ -392,7 +420,7 @@ function renderAdd(){
       </div>
       <div class="field" style="margin-top:12px"><label>Bonusuri / Tip-uri (RON)</label><input type="number" id="f-bonusuri" placeholder="0.00" min="0" step="0.01"/></div>
       <div class="field"><label>Notițe</label><textarea id="f-nota" placeholder="Ex: vreme rea, zone aglomerate..."></textarea></div>
-      <div class="notice">Carte de muncă <b>220 RON</b> dedusă automat săptămânal · Șef 10% se aplică automat dacă se lucrează</div>
+      <div class="notice">Săptămâna automat: <b>10% șef</b> + <b>220 RON CM</b> dacă lucrezi. Concediu: <b>0 RON CM</b>.</div>
       <div id="day-preview"></div>
       <button class="btn btn-or" id="add-btn" onclick="submitDay()"></button>
       <div id="day-toast" style="display:none" class="toast"></div>
@@ -402,7 +430,6 @@ function renderAdd(){
   document.getElementById('f-comenzi').addEventListener('input',updateDayPreview);
   document.getElementById('f-bonusuri').addEventListener('input',updateDayPreview);
   document.getElementById('add-btn').textContent=editing?'Salvează modificările':'Salvează ziua';
-
   if(editing&&d){
     document.getElementById('f-data').value=d.data||today();
     document.getElementById('f-comenzi').value=d.comenzi||'';
@@ -415,32 +442,15 @@ function renderAdd(){
   updateDayPreview();
 }
 
-function toggleSef(){
-  const sw=document.getElementById('sef-switch');
-  if(!sw)return;
-  sw.classList.toggle('on');
-  updateDayPreview();
-}
-function getSef(){
-  const sw=document.getElementById('sef-switch');
-  return sw?sw.classList.contains('on'):false;
-}
-
 function updateDayPreview(){
-  const c=parseFloat(document.getElementById('f-comenzi')?.value)||0;
-  const b=parseFloat(document.getElementById('f-bonusuri')?.value)||0;
-  const hasSef=getSef();
+  const c=parseFloat(document.getElementById('f-comenzi').value)||0;
+  const b=parseFloat(document.getElementById('f-bonusuri').value)||0;
   const total=c+b;
-  const el=document.getElementById('day-preview');if(!el)return;
-  const f=FIRMS[addFirm];
-  const sefNote=hasSef
-    ?`<div class="pr" style="margin-top:6px;border-top:1px dashed #222;padding-top:6px"><span style="color:#f87171;font-size:12px">⚠ Săptămâna are sold: 10% șef + 220 CM deduse la nivel de săptămână</span></div>`
-    :`<div class="pr" style="margin-top:6px;border-top:1px dashed #222;padding-top:6px"><span style="color:#555;font-size:12px">Fără sold: doar 220 RON CM dedus săptămânal</span></div>`;
-  el.innerHTML=c>0?`<div class="preview" style="border-color:${f.border}">
-    <div class="pr"><span>Comenzi</span><span>+${fmt(c)} RON</span></div>
-    ${b>0?`<div class="pr"><span>Bonusuri</span><span>+${fmt(b)} RON</span></div>`:''}
-    <div class="pr hl"><span>Total zi</span><span style="color:#4ade80">+${fmt(total)} RON</span></div>
-    ${sefNote}
+  const el=document.getElementById('day-preview');
+  if(!el)return;
+  el.innerHTML=total>0?`<div class="preview">
+    <div class="pr"><span>Total Brut Zi</span><span>${fmt(total)} RON</span></div>
+    <div class="pr" style="color:#666; font-size:11px">Calculul final (10% șef și 220 lei CM) se aplică automat la totalul săptămânii!</div>
   </div>`:'';
 }
 
@@ -450,51 +460,54 @@ function submitDay(){
   const ore=document.getElementById('f-ore').value;
   const bonusuri=document.getElementById('f-bonusuri').value;
   const nota=document.getElementById('f-nota').value;
-  const firma=addFirm;
-  const cu_sef=getSef();
-  if(!comenzi)return;
-  if(editDayId!==null){days=days.map(d=>d.id===editDayId?{id:editDayId,data,comenzi,ore,bonusuri,nota,firma,cu_sef}:d);editDayId=null;}
-  else days.push({id:Date.now(),data,comenzi,ore,bonusuri,nota,firma,cu_sef});
-  saveDays();
-  renderAdd();
+  if(!data)return;
+  if(editDayId!==null){
+    days=days.map(d=>d.id===editDayId?{id:editDayId,firma:addFirm,data,comenzi,ore,bonusuri,nota}:d);
+    editDayId=null;
+  } else {
+    days.push({id:Date.now(),firma:addFirm,data,comenzi,ore,bonusuri,nota});
+  }
+  saveDays();renderAdd();
   const t=document.getElementById('day-toast');
-  if(t){t.textContent='Zi salvată!';t.style.background='#0f2e18';t.style.color='#4ade80';t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
+  if(t){t.textContent='Zi salvată cu succes!';t.style.background='#1a1200';t.style.color='#F5B60A';t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
 }
 function cancelEditDay(){editDayId=null;renderAdd();}
-
-// ── HISTORY ──────────────────────────────────────────────────
-function firmBadgeHtml(firma){
-  const f=FIRMS[firma||'glovo'];
-  return`<span class="firm-badge" style="background:${f.bg};border:1px solid ${f.border};color:${f.color}">${LOGO_SM[firma||'glovo']} ${f.name}</span>`;
-}
 
 function renderHistory(){
   const grouped=groupDays();
   const monthKeys=Object.keys(grouped).sort().reverse();
-  if(days.length===0)return`<div class="empty"><span class="empty-icon">📦</span>Nicio zi salvată.<br/>Adaugă din tab-ul + Adaugă</div>`;
+  if(monthKeys.length===0)return`<div class="empty"><span class="empty-icon">📅</span>Nicio zi înregistrată încă.</div>`;
 
   if(!histNav){
     return monthKeys.map(mk=>{
-      const mW=grouped[mk],mDays=Object.values(mW).flat();
+      const mW=grouped[mk];
+      const mDays=Object.values(mW).flat();
       const brut=mDays.reduce((a,d)=>a+calcDay(d).total,0);
-      const wc=Object.keys(mW).length;
-      // week-level: each week calc its own sef+CM
-      const allWeekNets=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).net,0);
-      const net=allWeekNets;
-      const totalSef=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).sef,0);
-      const cm=wc*CARTE_MUNCA;
-      const ore=mDays.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
       const dom=dominantFirm(mDays);
+      
+      const distinctWeeks=new Set();
+      Object.keys(mW).forEach(fwk=>distinctWeeks.add(fwk));
+      const allExpected=getAllWeeksInMonth(mk, dom);
+      allExpected.forEach(w=>distinctWeeks.add(w+'__'+dom));
+      
+      let totalNet=0;
+      distinctWeeks.forEach(fwk=>{
+        const[weekStart,firma]=fwk.split('__');
+        const wD=mW[fwk]||[];
+        totalNet+=calcWeek(wD,weekStart).net;
+      });
+
+      const ore=mDays.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
       const fc=FIRMS[dom];
       return`<div class="month-row" style="border-left:3px solid ${fc.color}40" onclick="navToMonth('${mk}')">
         <div>
           <div class="month-row-name" style="display:flex;align-items:center;gap:7px">
             <span style="display:inline-flex">${LOGO_SM[dom]}</span>${monthLabel(mk)}
           </div>
-          <div class="month-row-sub">${wc} săpt · ${mDays.length} zile · ${ore} ore</div>
+          <div class="month-row-sub">${distinctWeeks.size} săpt · ${mDays.length} zile · ${ore} ore</div>
         </div>
         <div class="month-row-right">
-          <div class="month-row-net">${fmtInt(Math.round(net))} RON</div>
+          <div class="month-row-net">${fmtInt(Math.round(totalNet))} RON</div>
           <div class="month-row-meta">brut ${fmtInt(Math.round(brut))}</div>
         </div>
         <span style="color:#2a2a2a;font-size:14px;margin-left:8px">›</span>
@@ -504,13 +517,27 @@ function renderHistory(){
 
   if(typeof histNav==='string'){
     const mk=histNav,mW=grouped[mk]||{};
-    const wKeys=Object.keys(mW).sort().reverse();
     const mDays=Object.values(mW).flat();
-    const brut=mDays.reduce((a,d)=>a+calcDay(d).total,0);
-    const cm=wKeys.length*CARTE_MUNCA;
-    const net=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).net,0);
-    const totalSef=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).sef,0);
     const dom=dominantFirm(mDays);
+    
+    const distinctWeeks=new Set();
+    Object.keys(mW).forEach(fwk=>distinctWeeks.add(fwk));
+    const allExpected=getAllWeeksInMonth(mk, dom);
+    allExpected.forEach(w=>distinctWeeks.add(w+'__'+dom));
+    
+    const sortedFwKeys=Array.from(distinctWeeks).sort((a,b)=>b.split('__')[0].localeCompare(a.split('__')[0]));
+
+    let totalBrut=0,totalSef=0,totalCM=0,totalNet=0;
+    sortedFwKeys.forEach(fwk=>{
+      const[weekStart,firma]=fwk.split('__');
+      const wD=mW[fwk]||[];
+      const info=calcWeek(wD,weekStart);
+      totalBrut+=info.brut;
+      totalSef+=info.sef;
+      totalCM+=info.cm;
+      totalNet+=info.net;
+    });
+
     const fc=FIRMS[dom];
     return`
       <div class="breadcrumb">
@@ -519,80 +546,80 @@ function renderHistory(){
         <span style="color:#555">${monthLabel(mk)}</span>
       </div>
       <div class="week-summary" style="margin-bottom:12px;border-left:3px solid ${fc.color}50">
-        <div class="ws-title" style="display:flex;align-items:center;gap:6px">${LOGO_SM[dom]} Rezumat lună</div>
+        <div class="ws-title" style="display:flex;align-items:center;gap:6px">${LOGO_SM[dom]} Rezumat lună automat</div>
         <div class="ws-grid">
-          <div class="ws-item">Brut: <b>${fmt(brut)} RON</b></div>
-          <div class="ws-item orange">Carte muncă: <b>-${cm} RON</b></div>
-          ${totalSef>0?`<div class="ws-item red">Șef 10% (săpt cu sold): <b>-${fmt(totalSef)} RON</b></div>`:'<div class="ws-item" style="color:#333">Nicio săpt cu sold</div>'}
-          <div class="ws-item green">Net rămas: <b>${fmt(net)} RON</b></div>
+          <div class="ws-item">Brut: <b>${fmt(totalBrut)} RON</b></div>
+          <div class="ws-item red">Șef 10%: <b>-${fmt(totalSef)} RON</b></div>
+          <div class="ws-item orange">Carte muncă: <b>-${fmtInt(totalCM)} RON</b></div>
+          <div class="ws-item green">Net rămas: <b>${fmt(totalNet)} RON</b></div>
         </div>
       </div>
-      ${wKeys.map(wk=>{
-        const wD=mW[wk].slice().sort((a,b)=>a.data.localeCompare(b.data));
-        const {brut:wB,sef:wSef,net:wN,hasSef:wHasSef}=calcWeek(wD);
+      ${sortedFwKeys.map(fwk=>{
+        const[weekStart,firma]=fwk.split('__');
+        const wD=mW[fwk]||[];
+        const{brut:wB,sef:wSef,cm:wCM,net:wN,inVacation:wVac,wasWorked:wWork}=calcWeek(wD,weekStart);
         const wO=wD.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
-        const wDom=dominantFirm(wD),wfc=FIRMS[wDom];
-        return`<div class="week-row" style="border-left:3px solid ${wfc.color}40" onclick="navToWeek('${mk}','${wk}')">
+        return`<div class="week-row" style="border-left:3px solid ${FIRMS[firma].color}40" onclick="navToWeek('${mk}','${encodeURIComponent(fwk)}')">
           <div>
-            <div class="week-row-label" style="display:flex;align-items:center;gap:6px">${LOGO_SM[wDom]} ${weekLabel(wk)}</div>
-            <div class="week-row-sub">${wD.length} zile · ${wO} ore</div>
+            <div class="week-row-label" style="display:flex;align-items:center;gap:6px">${LOGO_SM[firma]} ${weekLabel(weekStart)}</div>
+            <div class="week-row-sub">${wD.length} zile · ${wO} ore${wVac?' · 🏖️ concediu':''}${!wWork&&!wVac?' · ⚠️ nelucrată':''}</div>
           </div>
           <div class="week-row-right">
-            <div class="week-row-net">${fmtInt(Math.round(wN))} RON</div>
-            <div class="week-row-meta">-${CARTE_MUNCA} CM</div>
+            <div class="week-row-net" style="color:${wN>=0?'#4ade80':'#f87171'}">${fmtInt(Math.round(wN))} RON</div>
+            <div class="week-row-meta">${wVac?'scutit CM':(wWork?'-'+fmt(wSef,0)+' șef ':'')+'-'+wCM+' CM'}</div>
           </div>
           <span style="color:#2a2a2a;font-size:14px;margin-left:8px">›</span>
         </div>`;
       }).join('')}`;
   }
 
-  if(histNav&&histNav.mk){
-    const{mk,wk}=histNav,g2=groupDays();
-    const wD=((g2[mk]||{})[wk]||[]).slice().sort((a,b)=>a.data.localeCompare(b.data));
-    const {brut:wB,sef:wSef,net:wN,hasSef:wHasSef}=calcWeek(wD);
-    const wO=wD.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
-    const wDom=dominantFirm(wD),wfc=FIRMS[wDom];
+  if(typeof histNav==='object'&&histNav!==null){
+    const{month:mk,fwKey:encodedFwk}=histNav;
+    const fwk=decodeURIComponent(encodedFwk);
+    const[weekStart,firma]=fwk.split('__');
+    const wD=(grouped[mk]||{})[fwk]||[];
+    const sortedDays=wD.slice().sort((a,b)=>a.data.localeCompare(b.data));
+    const{brut:wB,sef:wSef,cm:wCM,net:wN,inVacation:wVac,wasWorked:wWork}=calcWeek(wD,weekStart);
+
     return`
       <div class="breadcrumb">
         <button class="bc-btn" onclick="navToMonths()">Istoric</button>
         <span class="bc-sep">›</span>
         <button class="bc-btn" onclick="navToMonth('${mk}')">${monthLabel(mk)}</button>
         <span class="bc-sep">›</span>
-        <span style="color:#555">${weekLabel(wk)}</span>
+        <span style="color:#555">${weekLabel(weekStart)}</span>
       </div>
-      <div class="week-summary" style="border-left:3px solid ${wfc.color}50">
-        <div class="ws-title" style="display:flex;align-items:center;gap:6px">${LOGO_SM[wDom]} Rezumat săptămână</div>
+      <div class="week-summary" style="border-left:3px solid ${FIRMS[firma].color}">
+        <div class="ws-title" style="display:flex;align-items:center;gap:6px">${LOGO_SM[firma]} Detalii săptămână (${FIRMS[firma].name})</div>
         <div class="ws-grid">
           <div class="ws-item">Brut: <b>${fmt(wB)} RON</b></div>
-          ${wHasSef?`<div class="ws-item red">Șef 10% (sold): <b>-${fmt(wSef)} RON</b></div>`:`<div class="ws-item" style="color:#333">Fără sold (no 10%)</div>`}
-          <div class="ws-item orange">Carte muncă: <b>-${CARTE_MUNCA} RON</b></div>
-          <div class="ws-item">Ore lucrate: <b>${wO} h</b></div>
-          <div class="ws-item green">Net săpt: <b>${fmt(wN)} RON</b></div>
+          <div class="ws-item red">Șef 10%: <b>-${fmt(wSef)} RON</b></div>
+          <div class="ws-item orange">Carte muncă: <b>-${fmtInt(wCM)} RON</b></div>
+          <div class="ws-item green">Net: <b>${fmt(wN)} RON</b></div>
         </div>
+        ${wVac?`<div style="font-size:11px;color:#4ade80;margin-top:6px;font-weight:500">🏖️ Săptămână protejată de concediu (fără taxă carte muncă).</div>`:''}
+        ${!wWork&&!wVac?`<div style="font-size:11px;color:#f87171;margin-top:6px;font-weight:500">⚠️ Săptămână nelucrată (se rețin doar cei 220 lei pentru cartea de muncă).</div>`:''}
       </div>
-      ${wD.map(d=>{
-        const{comenzi,bonusuri,total}=calcDay(d);
-        const f=FIRMS[d.firma||'glovo'];
-        return`<div class="day-card" style="border-left:3px solid ${f.color}40">
+      ${sortedDays.length===0?`<div class="empty">Nicio zi salvată pe această firmă în această săptămână.</div>`:''}
+      ${sortedDays.map(d=>{
+        const dayB=calcDay(d).total;
+        return`<div class="day-card">
           <div class="day-hdr">
             <div>
               <div class="day-title">${dayLabel(d.data)}</div>
-              <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
-                ${firmBadgeHtml(d.firma||'glovo')}
-                ${d.ore?`<span style="font-size:10px;color:#333">${d.ore}h</span>`:''}
-                ${d.cu_sef?`<span style="font-size:10px;color:#f87171;background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.2);padding:2px 6px;border-radius:4px;">−10% șef</span>`:''}
-              </div>
+              <div class="day-sub">${d.ore||0} ore lucrate</div>
             </div>
             <div class="day-actions">
               <button class="ic" onclick="editDay(${d.id})">✏️</button>
-              <button class="ic red" onclick="askDelete('day',${d.id},'Ștergi ziua de ${d.data}?')">🗑️</button>
+              <button class="ic red" onclick="deleteDay(${d.id},'${d.data}')">🗑️</button>
             </div>
           </div>
           <div class="sg">
-            <div class="sb"><div class="sl">Comenzi</div><div class="sv">${fmt(comenzi)} RON</div></div>
-            <div class="sb"><div class="sl">Bonusuri</div><div class="sv">${fmt(bonusuri)} RON</div></div>
-            <div class="sb o"><div class="sl">Ore lucrate</div><div class="sv orange">${d.ore||'—'}</div></div>
-            <div class="sb g"><div class="sl">Total zi</div><div class="sv green">${fmt(total)} RON</div></div>
+            <div class="sb"><div class="sl">Comenzi</div><div class="sv">${fmt(d.comenzi||0)}</div></div>
+            <div class="sb"><div class="sl">Bonus / Tip</div><div class="sv">${fmt(d.bonusuri||0)}</div></div>
+          </div>
+          <div class="sg" style="margin-top:6px">
+            <div class="sb g" style="grid-column: span 2"><div class="sl">Total zi brut</div><div class="sv green">${fmt(dayB)} RON</div></div>
           </div>
           ${d.nota?`<div class="day-note">${d.nota}</div>`:''}
         </div>`;
@@ -600,12 +627,13 @@ function renderHistory(){
   }
   return'';
 }
-function navToMonths(){histNav=null;document.getElementById('main-content').innerHTML=renderHistory();}
-function navToMonth(mk){histNav=mk;document.getElementById('main-content').innerHTML=renderHistory();}
-function navToWeek(mk,wk){histNav={mk,wk};document.getElementById('main-content').innerHTML=renderHistory();}
-function editDay(id){editDayId=id;switchTab('add');}
 
-// ── FUEL ──────────────────────────────────────────────────────
+function navToMonths(){histNav=null;render();}
+function navToMonth(mk){histNav=mk;render();}
+function navToWeek(mk,fwk){histNav={month:mk,fwKey:fwk};render();}
+function editDay(id){editDayId=id;switchTab('add');}
+function deleteDay(id,lbl){askDelete('day',id,`Ștergi ziua de ${lbl}?`);}
+
 function renderFuel(){
   const c=document.getElementById('main-content');
   const editing=editFuelId!==null;
@@ -621,7 +649,7 @@ function renderFuel(){
         <div class="field" style="margin-bottom:0"><label>Litri</label><input type="number" id="ff-litri" placeholder="0.00" min="0" step="0.01"/></div>
         <div class="field" style="margin-bottom:0"><label>Preț per litru (RON)</label><input type="number" id="ff-pret" placeholder="7.50" min="0" step="0.01"/></div>
       </div>
-      <div class="field" style="margin-top:12px"><label>Stație / Notițe</label><textarea id="ff-nota" placeholder="Ex: OMV, Rompetrol, benzină..."></textarea></div>
+      <div class="field" style="margin-top:12px"><label>Stație / Notițe</label><textarea id="ff-nota" placeholder="Ex: OMV, Rompetrol..."></textarea></div>
       <div class="toggle-row" onclick="toggleFuelFirma()" id="firma-toggle">
         <span>Alimentat pe firmă (decontare 5%)</span>
         <div class="toggle-switch${peFirma?' on':''}" id="firma-switch"></div>
@@ -636,7 +664,6 @@ function renderFuel(){
   document.getElementById('ff-litri').addEventListener('input',updateFuelPreview);
   document.getElementById('ff-pret').addEventListener('input',updateFuelPreview);
   document.getElementById('fuel-btn').textContent=editing?'Salvează modificările':'Salvează bon';
-
   if(editing&&ef){
     document.getElementById('ff-data').value=ef.data||today();
     document.getElementById('ff-litri').value=ef.litri||'';
@@ -655,8 +682,7 @@ function getFuelFirma(){const sw=document.getElementById('firma-switch');return 
 function updateFuelPreview(){
   const l=parseFloat(document.getElementById('ff-litri')?.value)||0;
   const p=parseFloat(document.getElementById('ff-pret')?.value)||0;
-  const firma=getFuelFirma();
-  const total=l*p,dec=firma?total*FUEL_RATE:0,net=total-dec;
+  const firma=getFuelFirma();const total=l*p,dec=firma?total*FUEL_RATE:0,net=total-dec;
   const el=document.getElementById('fuel-preview');if(!el)return;
   el.innerHTML=l>0&&p>0?`<div class="preview">
     <div class="pr"><span>${fmt(l,2)} L × ${fmt(p,2)} RON/L</span><span>${fmt(total)} RON</span></div>
@@ -672,91 +698,75 @@ function renderFuelList(){
     const mF=fm[mk];
     const mNet=mF.reduce((a,f)=>a+calcFuel(f).net,0);
     const mL=mF.reduce((a,f)=>a+(parseFloat(f.litri)||0),0);
-    const mTotal=mF.reduce((a,f)=>a+calcFuel(f).total,0);
-    const mDec=mF.reduce((a,f)=>a+calcFuel(f).decontare,0);
     return`<div style="margin-bottom:9px;">
-      <div class="month-row" style="border-radius:10px 10px 0 0;margin-bottom:0;" onclick="toggleFuelMonth('${mk}')">
+      <div class="month-row" style="border-radius:10px; margin-bottom:4px;" onclick="toggleFuelMonth('${mk}')">
         <div>
           <div class="month-row-name" style="color:#0ea5e9">${monthLabel(mk)}</div>
-          <div class="month-row-sub">${mF.length} bonuri · ${fmt(mL,1)} L · cost real ${fmtInt(Math.round(mNet))} RON</div>
+          <div class="month-row-sub">${mF.length} bonuri · ${fmt(mL,1)} L</div>
         </div>
-        <span id="fchev-${mk}" style="color:#2a2a2a;font-size:11px;display:inline-block;transition:transform .2s">▼</span>
+        <div class="month-row-right"><div class="month-row-net" style="color:#0ea5e9">${fmtInt(Math.round(mNet))} RON</div></div>
       </div>
-      <div id="fmbody-${mk}" style="display:none;background:#0a0a0a;border:1px solid #1a1a1a;border-top:none;border-radius:0 0 10px 10px;padding:11px 13px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px;">
-          <div style="background:#111;border-radius:7px;padding:8px 10px;"><div class="sl">Total litri</div><div class="sv">${fmt(mL,1)} L</div></div>
-          <div style="background:#111;border-radius:7px;padding:8px 10px;"><div class="sl">Brut plătit</div><div class="sv">${fmt(mTotal)} RON</div></div>
-          ${mDec>0?`<div style="background:rgba(14,165,233,.05);border-radius:7px;padding:8px 10px;"><div class="sl">Decontat</div><div class="sv" style="color:#0ea5e9">-${fmt(mDec)} RON</div></div>`:''}
-          <div style="background:rgba(14,165,233,.05);border-radius:7px;padding:8px 10px;"><div class="sl">Cost real</div><div class="sv" style="color:#0ea5e9">${fmt(mNet)} RON</div></div>
-        </div>
-        ${mF.slice().sort((a,b)=>b.data.localeCompare(a.data)).map(f=>{
-          const fc=calcFuel(f);
-          return`<div style="background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:12px;margin-bottom:7px;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;">
-              <div>
-                <div style="font-size:13px;font-weight:600;color:#bbb">${f.data}</div>
-                <div style="font-size:11px;color:#3a3a3a;margin-top:2px">${fmt(fc.litri,2)} L · ${fmt(fc.pret,2)} RON/L · ${fc.pe_firma?'<span style="color:#0ea5e9">pe firmă</span>':'<span style="color:#555">personal</span>'}</div>
-              </div>
-              <div style="display:flex;gap:5px;">
-                <button style="background:#161616;border:1px solid #1e1e1e;border-radius:6px;color:#3a3a3a;padding:4px 8px;font-size:11px;cursor:pointer;" onclick="editFuel(${f.id})">✏️</button>
-                <button style="background:#161616;border:1px solid #1e1e1e;border-radius:6px;color:#3a3a3a;padding:4px 8px;font-size:11px;cursor:pointer;" onclick="askDelete('fuel',${f.id},'Ștergi bonul din ${f.data}?')">🗑️</button>
-              </div>
+      <div id="fmbody-${mk}" style="display:block; background:#0d0d0d; border:1px solid #1a1a1a; border-radius:10px; padding:8px; margin-bottom:12px;">
+        ${mF.map(f=>{
+          const inf=calcFuel(f);
+          return`<div style="display:flex; justify-content:between; align-items:center; padding:8px 4px; border-bottom:1px solid #161616;">
+            <div style="flex:1">
+              <div style="font-size:12px; color:#ccc">${f.data} · ${fmt(inf.litri,1)}L · ${f.nota||'Carburant'}</div>
+              <div style="font-size:10px; color:#444">${inf.pe_firma?'Pe firmă (5% decontat)':'Preț întreg'}</div>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-              <div style="background:#0d0d0d;border-radius:7px;padding:7px 9px;"><div class="sl">Total bon</div><div class="sv">${fmt(fc.total)} RON</div></div>
-              ${fc.pe_firma?`<div style="background:rgba(14,165,233,.05);border-radius:7px;padding:7px 9px;"><div class="sl">Decontare 5%</div><div class="sv" style="color:#0ea5e9">-${fmt(fc.decontare)} RON</div></div>`:'<div style="background:#0d0d0d;border-radius:7px;padding:7px 9px;"><div class="sl">Tip</div><div class="sv" style="color:#555">Personal</div></div>'}
-              <div style="background:rgba(14,165,233,.05);border-radius:7px;padding:7px 9px;grid-column:span 2;"><div class="sl">Cost real</div><div class="sv" style="color:#0ea5e9;font-size:15px;">${fmt(fc.net)} RON</div></div>
+            <div style="text-align:right; margin-right:8px;">
+              <div style="font-size:13px; font-weight:600; color:#0ea5e9">${fmtInt(Math.round(inf.net))} RON</div>
             </div>
-            ${f.nota?`<div class="day-note" style="margin-top:9px;">${f.nota}</div>`:''}
+            <button class="ic" onclick="editFuel(${f.id})">✏️</button>
+            <button class="ic red" onclick="deleteFuel(${f.id},'${f.data}')" style="margin-left:4px">🗑️</button>
           </div>`;
         }).join('')}
       </div>
     </div>`;
   }).join('');
 }
-
-function toggleFuelMonth(mk){
-  const body=document.getElementById('fmbody-'+mk),chev=document.getElementById('fchev-'+mk);
-  if(!body)return;
-  const open=body.style.display!=='none';
-  body.style.display=open?'none':'block';
-  if(chev)chev.style.transform=open?'':'rotate(180deg)';
-}
-
+function toggleFuelMonth(mk){const el=document.getElementById(`fmbody-${mk}`); if(el) el.style.display=el.style.display==='none'?'block':'none';}
+function editFuel(id){editFuelId=id;renderFuel();}
+function deleteFuel(id,lbl){askDelete('fuel',id,`Ștergi bonul de carburant din ${lbl}?`);}
 function submitFuel(){
   const data=document.getElementById('ff-data').value;
   const litri=document.getElementById('ff-litri').value;
   const pret_litru=document.getElementById('ff-pret').value;
   const nota=document.getElementById('ff-nota').value;
   const pe_firma=getFuelFirma();
-  if(!litri||!pret_litru)return;
-  if(editFuelId!==null){fuels=fuels.map(f=>f.id===editFuelId?{id:editFuelId,data,litri,pret_litru,nota,pe_firma}:f);editFuelId=null;}
-  else fuels.push({id:Date.now(),data,litri,pret_litru,nota,pe_firma});
-  saveFuels();
-  renderFuel();
-  const t=document.getElementById('fuel-toast');
-  if(t){t.textContent='Bon salvat!';t.style.background='#0c2d3d';t.style.color='#7dd3fc';t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
+  if(!data||!litri||!pret_litru)return;
+  if(editFuelId!==null){
+    fuels=fuels.map(f=>f.id===editFuelId?{id:editFuelId,data,litri,pret_litru,nota,pe_firma}: f);
+    editFuelId=null;
+  } else {
+    fuels.push({id:Date.now(),data,litri,pret_litru,nota,pe_firma});
+  }
+  saveFuels();renderFuel();
 }
 function cancelEditFuel(){editFuelId=null;renderFuel();}
-function editFuel(id){editFuelId=id;renderFuel();}
 
-// ── SERVICE ──────────────────────────────────────────────────
 function renderService(){
   const c=document.getElementById('main-content');
   const editing=editSrvId!==null;
   const es=editing?serviceRecs.find(x=>x.id===editSrvId):null;
-  if(editing&&es)srvItems=es.items.map(i=>({...i}));
+  if(editing&&es)srvItems=es.items||[{name:'',pret:''}];
   else if(!editing)srvItems=[{name:'',pret:''}];
+  const peFirma=es?(es.pe_firma===true||es.pe_firma==='true'):true;
 
   c.innerHTML=`
+    <div class="cui">CUI firmă: ${CUI}</div>
     <div class="card">
       <div class="card-title">${editing?'Editează bon service':'Adaugă bon service'}</div>
-      <div class="field"><label>Data</label><input type="date" id="sv-data"/></div>
-      <div class="field"><label>Notițe (atelier, mașină etc)</label><textarea id="sv-nota" placeholder="Ex: Vulcanizare Ionescu, Dacia Logan..."></textarea></div>
+      <div class="field"><label>Data service / revizie</label><input type="date" id="sv-data"/></div>
+      <div class="field"><label>Notițe atelier / reparații</label><textarea id="sv-nota" placeholder="Ex: Schimb ulei Astra H, Vulcanizare..."></textarea></div>
       <div class="field">
-        <label>Produse / servicii</label>
+        <label>Produse / Servicii</label>
         <div id="srv-items-list"></div>
         <button class="btn btn-gh btn-sm" style="margin-top:6px;width:auto;padding:8px 16px;" onclick="addSrvItem()">+ Adaugă produs</button>
+      </div>
+      <div class="toggle-row" onclick="toggleSrvFirma()" id="srv-firma-toggle">
+        <span>Bon pe firmă (decontare 5%)</span>
+        <div class="toggle-switch${peFirma?' on':''}" id="srv-firma-switch"></div>
       </div>
       <div id="srv-preview"></div>
       <button class="btn btn-gr" id="srv-btn" onclick="submitService()"></button>
@@ -765,23 +775,24 @@ function renderService(){
     </div>
     <div id="srv-list"></div>`;
 
-  document.getElementById('srv-btn').textContent=editing?'Salvează modificările':'Salvează bon';
+  document.getElementById('srv-btn').textContent=editing?'Salvează modificările':'Salvează bon service';
   if(editing&&es){
     document.getElementById('sv-data').value=es.data||today();
     document.getElementById('sv-nota').value=es.nota||'';
   } else {
     document.getElementById('sv-data').value=today();
   }
-  renderSrvItems();
-  renderSrvList();
+  renderSrvItems();renderSrvList();
 }
 
+function toggleSrvFirma(){const sw=document.getElementById('srv-firma-switch');if(sw){sw.classList.toggle('on');updateSrvPreview();}}
+function getSrvFirma(){const sw=document.getElementById('srv-firma-switch');return sw?sw.classList.contains('on'):true;}
+
 function renderSrvItems(){
-  const container=document.getElementById('srv-items-list');
-  if(!container)return;
+  const container=document.getElementById('srv-items-list');if(!container)return;
   container.innerHTML=srvItems.map((item,i)=>`
     <div class="service-item-row">
-      <input type="text" placeholder="Produs / serviciu" value="${item.name||''}" oninput="updateSrvItem(${i},'name',this.value)" style="flex:2"/>
+      <input type="text" placeholder="Reparație / Piesă" value="${item.name||''}" oninput="updateSrvItem(${i},'name',this.value)" style="flex:2"/>
       <input type="number" placeholder="RON" value="${item.pret||''}" oninput="updateSrvItem(${i},'pret',this.value)" min="0" step="0.01" style="flex:1"/>
       ${srvItems.length>1?`<button class="del-item-btn" onclick="removeSrvItem(${i})">×</button>`:''}
     </div>`).join('');
@@ -790,228 +801,207 @@ function renderSrvItems(){
 function updateSrvItem(i,field,val){srvItems[i][field]=val;updateSrvPreview();}
 function addSrvItem(){srvItems.push({name:'',pret:''});renderSrvItems();}
 function removeSrvItem(i){srvItems.splice(i,1);renderSrvItems();}
+
 function updateSrvPreview(){
   const total=srvItems.reduce((a,i)=>a+(parseFloat(i.pret)||0),0);
+  const peFirma=getSrvFirma();
+  const dec=peFirma?total*SRV_RATE:0,net=total-dec;
   const el=document.getElementById('srv-preview');if(!el)return;
   el.innerHTML=total>0?`<div class="preview">
-    <div class="pr"><span>Produse (${srvItems.filter(i=>i.name||i.pret).length})</span><span>${fmt(total)} RON</span></div>
-    <div class="pr hl"><span>Total bon service</span><span style="color:#f87171">-${fmt(total)} RON</span></div>
+    <div class="pr"><span>Total piese/manoperă</span><span>${fmt(total)} RON</span></div>
+    ${peFirma?`<div class="pr"><span>Decontare service (5%)</span><span style="color:#16a34a">-${fmt(dec)} RON</span></div>`:''}
+    <div class="pr hl"><span>Cost real service</span><span style="color:#16a34a">${fmt(net)} RON</span></div>
   </div>`:'';
 }
+
 function submitService(){
   const data=document.getElementById('sv-data').value;
   const nota=document.getElementById('sv-nota').value;
   const items=srvItems.filter(i=>i.name||i.pret);
-  if(items.length===0)return;
-  if(editSrvId!==null){serviceRecs=serviceRecs.map(s=>s.id===editSrvId?{id:editSrvId,data,nota,items}:s);editSrvId=null;}
-  else serviceRecs.push({id:Date.now(),data,nota,items});
-  saveSrv();
-  srvItems=[{name:'',pret:''}];
-  renderService();
-  const t=document.getElementById('srv-toast');
-  if(t){t.textContent='Bon service salvat!';t.style.background='#0f2e18';t.style.color='#4ade80';t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
+  const pe_firma=getSrvFirma();
+  if(items.length===0||!data)return;
+  if(editSrvId!==null){
+    serviceRecs=serviceRecs.map(s=>s.id===editSrvId?{id:editSrvId,data,nota,items,pe_firma}:s);
+    editSrvId=null;
+  } else serviceRecs.push({id:Date.now(),data,nota,items,pe_firma});
+  saveSrv();srvItems=[{name:'',pret:''}];renderService();
 }
-function cancelEditSrv(){editSrvId=null;srvItems=[{name:'',pret:''}];renderService();}
-function editSrv(id){editSrvId=id;renderService();}
 
 function renderSrvList(){
   const el=document.getElementById('srv-list');if(!el)return;
-  if(serviceRecs.length===0){el.innerHTML=`<div class="empty"><span class="empty-icon">🔧</span>Niciun bon service salvat.</div>`;return;}
+  if(serviceRecs.length===0){el.innerHTML=`<div class="empty"><span class="empty-icon">🔧</span>Niciun bon de service salvat.</div>`;return;}
   const sm=getSrvMonths();
   el.innerHTML=Object.keys(sm).sort().reverse().map(mk=>{
     const mS=sm[mk];
-    const mTotal=mS.reduce((a,s)=>a+calcSrv(s),0);
-    return`<div style="margin-bottom:9px;">
-      <div class="month-row" style="border-radius:10px 10px 0 0;margin-bottom:0;" onclick="toggleSrvMonth('${mk}')">
-        <div>
-          <div class="month-row-name" style="color:#f87171">${monthLabel(mk)}</div>
-          <div class="month-row-sub">${mS.length} bonuri · total ${fmt(mTotal)} RON</div>
-        </div>
-        <span id="svchev-${mk}" style="color:#2a2a2a;font-size:11px;display:inline-block;transition:transform .2s">▼</span>
+    const mNet=mS.reduce((a,s)=>a+calcSrv(s).net,0);
+    return`<div style="margin-bottom:10px;">
+      <div class="month-row" style="border-radius:10px; margin-bottom:4px;" onclick="toggleSrvMonth('${mk}')">
+        <div><div class="month-row-name" style="color:#16a34a">${monthLabel(mk)}</div><div class="month-row-sub">${mS.length} intrări service</div></div>
+        <div class="month-row-right"><div class="month-row-net" style="color:#16a34a">${fmtInt(Math.round(mNet))} RON</div></div>
       </div>
-      <div id="svbody-${mk}" style="display:none;background:#0a0a0a;border:1px solid #1a1a1a;border-top:none;border-radius:0 0 10px 10px;padding:11px 13px;">
-        ${mS.slice().sort((a,b)=>b.data.localeCompare(a.data)).map(s=>{
-          const tot=calcSrv(s);
-          return`<div class="service-record">
+      <div id="smbody-${mk}" style="display:block; background:#0d0d0d; border:1px solid #1a1a1a; border-radius:10px; padding:8px; margin-bottom:12px;">
+        ${mS.map(s=>{
+          const inf=calcSrv(s);
+          return`<div class="service-record" style="margin-bottom:6px; border:none; background:#111;">
             <div class="srv-hdr">
-              <div>
-                <div class="srv-title">${s.data}</div>
-                ${s.nota?`<div class="srv-sub">${s.nota}</div>`:''}
-              </div>
-              <div style="display:flex;gap:5px;align-items:center;">
-                <span style="font-size:14px;font-weight:700;color:#f87171">-${fmt(tot)} RON</span>
+              <div><div class="srv-title">${s.data} · ${s.nota||'Service'}</div><div class="srv-sub">${inf.pe_firma?'Bifat pe firmă (5% decontat)':'Preț întreg'}</div></div>
+              <div class="day-actions">
                 <button class="ic" onclick="editSrv(${s.id})">✏️</button>
-                <button class="ic red" onclick="askDelete('srv',${s.id},'Ștergi bonul service?')">🗑️</button>
+                <button class="ic red" onclick="deleteSrv(${s.id},'${s.data}')">🗑️</button>
               </div>
             </div>
             <div class="srv-items">
-              ${(s.items||[]).map(i=>`<div class="srv-item"><span>${i.name||'—'}</span><span>${fmt(parseFloat(i.pret)||0)} RON</span></div>`).join('')}
+              ${(s.items||[]).map(i=>`<div class="srv-item"><span>${i.name||'Piesă/Serviciu'}</span><span>${fmt(i.pret||0)} RON</span></div>`).join('')}
             </div>
-            <div class="srv-total"><span>Total bon</span><span>${fmt(tot)} RON</span></div>
+            <div class="srv-total"><span>Cost real achitat</span><span style="color:#16a34a">${fmt(inf.net)} RON</span></div>
           </div>`;
         }).join('')}
       </div>
     </div>`;
   }).join('');
 }
-function toggleSrvMonth(mk){
-  const body=document.getElementById('svbody-'+mk),chev=document.getElementById('svchev-'+mk);
-  if(!body)return;
-  const open=body.style.display!=='none';
-  body.style.display=open?'none':'block';
-  if(chev)chev.style.transform=open?'':'rotate(180deg)';
+function toggleSrvMonth(mk){const el=document.getElementById(`smbody-${mk}`); if(el) el.style.display=el.style.display==='none'?'block':'none';}
+function editSrv(id){editSrvId=id;renderService();}
+function deleteSrv(id,lbl){askDelete('service',id,`Ștergi intrarea service din ${lbl}?`);}
+function cancelEditSrv(){editSrvId=null;renderService();}
+
+function renderVacation(){
+  const c=document.getElementById('main-content');
+  const editing=editVacId!==null;
+  const ev=editing?vacations.find(x=>x.id===editVacId):null;
+
+  c.innerHTML=`
+    <div class="card">
+      <div class="card-title">${editing?'Editează concediu':'Adaugă perioadă concediu'}</div>
+      <div class="row2">
+        <div class="field"><label>Dată început</label><input type="date" id="vc-start"/></div>
+        <div class="field"><label>Dată sfârșit</label><input type="date" id="vc-end"/></div>
+      </div>
+      <div class="field"><label>Observații / Notițe</label><textarea id="vc-nota" placeholder="Ex: Concediu vară, sărbători..."></textarea></div>
+      <div class="notice">Săptămânile incluse în concediu au taxarea cărții de muncă **anulată complet (0 lei)**.</div>
+      <div id="vac-preview"></div>
+      <button class="btn btn-gr" id="vac-btn" onclick="submitVacation()"></button>
+      <div id="vac-toast" style="display:none" class="toast"></div>
+      ${editing?`<button class="btn btn-gh" onclick="cancelEditVac()">Anulează editarea</button>`:''}
+    </div>
+    <div id="vac-list"></div>`;
+
+  document.getElementById('vac-btn').textContent=editing?'Salvează modificările':'Salvează concediu';
+  document.getElementById('vc-start').addEventListener('change',updateVacPreview);
+  document.getElementById('vc-end').addEventListener('change',updateVacPreview);
+  if(editing&&ev){
+    document.getElementById('vc-start').value=ev.dataStart||today();
+    document.getElementById('vc-end').value=ev.dataSfarsit||today();
+    document.getElementById('vc-nota').value=ev.nota||'';
+  } else {
+    document.getElementById('vc-start').value=today();
+    document.getElementById('vc-end').value=today();
+  }
+  updateVacPreview();renderVacList();
 }
 
-// ── STATS ──────────────────────────────────────────────────────
-function renderStats(){
-  if(days.length===0&&fuels.length===0&&serviceRecs.length===0)
-    return`<div class="empty"><span class="empty-icon">📊</span>Nu există date încă.</div>`;
+function updateVacPreview(){
+  const s=document.getElementById('vc-start')?.value,e=document.getElementById('vc-end')?.value;
+  const el=document.getElementById('vac-preview');if(!el)return;
+  if(!s||!e){el.innerHTML='';return;}
+  const ds=new Date(s),de=new Date(e);
+  if(de<ds){el.innerHTML=`<div class="notice" style="color:#f87171">Data de sfârșit este invalidă!</div>`;return;}
+  const z=Math.round((de-ds)/(1000*60*60*24))+1;
+  el.innerHTML=`<div class="preview"><div class="pr"><span>Durată totală</span><span>${z} ${z===1?'zi':'zile libere'}</span></div><div class="pr hl"><span>Carte Muncă Scutită</span><span style="color:#4ade80">0 RON / săpt</span></div></div>`;
+}
 
-  const grouped=groupDays();
-  const weekSet=new Set(days.map(d=>getWeekKey(d.data)));
-  const totalBrut=days.reduce((a,d)=>a+calcDay(d).total,0);
-  const totalCM=weekSet.size*CARTE_MUNCA;
-  // compute sef and net at week level
-  const grouped2=groupDays();
-  let totalSef=0,totalNet=0;
-  Object.values(grouped2).forEach(mW=>Object.values(mW).forEach(wD=>{const w=calcWeek(wD);totalSef+=w.sef;totalNet+=w.net;}));
-
-  const totalFuelNet=fuels.reduce((a,f)=>a+calcFuel(f).net,0);
-  const totalFuelDec=fuels.reduce((a,f)=>a+calcFuel(f).decontare,0);
-  const totalSrv=serviceRecs.reduce((a,s)=>a+calcSrv(s),0);
-  const profitNet=totalNet-totalFuelNet-totalSrv;
-  const totalOre=days.reduce((a,d)=>a+(parseFloat(d.ore)||0),0);
-  const medieOra=totalOre>0?profitNet/totalOre:0;
-
-  const fm=getFuelMonths();
-  const sm=getSrvMonths();
-  const allMK=[...new Set([...Object.keys(grouped),...Object.keys(fm),...Object.keys(sm)])].sort().reverse();
-
-  // chart
-  const chartMK=allMK.slice(0,6).reverse();
-  const chartData=chartMK.map(mk=>{
-    const mW=grouped[mk]||{};
-    const mDays=Object.values(mW).flat();
-    const brut=mDays.reduce((a,d)=>a+calcDay(d).total,0);
-    const net=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).net,0);
-    const fNet=(fm[mk]||[]).reduce((a,f)=>a+calcFuel(f).net,0);
-    const sNet=(sm[mk]||[]).reduce((a,s)=>a+calcSrv(s),0);
-    return{mk,profit:net-fNet-sNet};
-  });
-  const maxVal=Math.max(...chartData.map(d=>Math.abs(d.profit)),1);
-
-  const chartHtml=`<div class="chart-wrap">
-    <div class="chart-title">Profit net lunar (ultimele ${chartMK.length} luni)</div>
-    <div class="bar-chart">
-      ${chartData.map(d=>{
-        const pct=Math.abs(d.profit)/maxVal*100;
-        const col=d.profit>=0?'#4ade80':'#f87171';
-        const[,mm]=d.mk.split('-');
-        const mName=new Date(2000,+mm-1,1).toLocaleDateString('ro-RO',{month:'short'});
-        return`<div class="bar-col">
-          <div class="bar-val" style="color:${col}">${fmtInt(Math.round(d.profit))}</div>
-          <div class="bar" style="height:${pct}%;background:${col};opacity:.8;margin-top:auto;"></div>
-          <div class="bar-lbl">${mName}</div>
-        </div>`;
-      }).join('')}
-    </div>
-  </div>`;
-
-  // firm breakdown
-  const firmTotals={glovo:0,wolt:0,bolt:0};
-  days.forEach(d=>{const fk=d.firma||'glovo';firmTotals[fk]+=(calcDay(d).total||0);});
-  const firmHtml=Object.entries(firmTotals).filter(([,v])=>v>0).map(([k,v])=>{
-    const f=FIRMS[k];
-    return`<div class="sc-item" style="background:${f.bg};border:1px solid ${f.border}">
-      <div class="sc-il" style="display:flex;align-items:center;gap:4px">${LOGO_SM[k]} <span style="color:${f.color}">${f.name}</span></div>
-      <div class="sc-iv" style="color:${f.color}">${fmtInt(Math.round(v))} RON</div>
+function submitVacation(){
+  const dataStart=document.getElementById('vc-start').value;
+  const dataSfarsit=document.getElementById('vc-end').value;
+  const nota=document.getElementById('vc-nota').value;
+  if(!dataStart||!dataSfarsit||new Date(dataSfarsit)<new Date(dataStart))return;
+  if(editVacId!==null){
+    vacations=vacations.map(v=>v.id===editVacId?{id:editVacId,dataStart,dataSfarsit,nota}:v);
+    editVacId=null;
+  } else vacations.push({id:Date.now(),dataStart,dataSfarsit,nota});
+  saveVac();renderVacation();
+}
+function renderVacList(){
+  const el=document.getElementById('vac-list');if(!el)return;
+  if(vacations.length===0){el.innerHTML=`<div class="empty"><span class="empty-icon">🏖️</span>Nicio perioadă de concediu salvată.</div>`;return;}
+  el.innerHTML=vacations.slice().sort((a,b)=>b.dataStart.localeCompare(a.dataStart)).map(v=>{
+    const z=Math.round((new Date(v.dataSfarsit)-new Date(v.dataStart))/(1000*60*60*24))+1;
+    return`<div class="week-row" style="cursor:default;border-left:3px solid #4ade8040">
+      <div><div class="week-row-label">🏖️ ${v.dataStart} – ${v.dataSfarsit}</div><div class="week-row-sub">${z} zile · ${v.nota||'Fără detalii'}</div></div>
+      <div class="day-actions">
+        <button class="ic" onclick="editVac(${v.id})">✏️</button>
+        <button class="ic red" onclick="deleteVac(${v.id})">🗑️</button>
+      </div>
     </div>`;
   }).join('');
+}
+function editVac(id){editVacId=id;renderVacation();}
+function deleteVac(id){askDelete('vac',id,'Ștergi această perioadă de concediu?');}
+function cancelEditVac(){editVacId=null;renderVacation();}
 
-  return`
-    ${chartHtml}
-    <div class="profit-card ${profitNet>=0?'g':'r'}">
-      <div class="pc-lbl">PROFIT NET FINAL</div>
-      <div class="pc-val ${profitNet>=0?'g':'r'}">${fmtInt(Math.round(profitNet))} <span style="font-size:18px;color:#3a3a3a;font-weight:400">RON</span></div>
-      <div class="pc-sub">Bani curați rămași în buzunar<br>Medie ${fmt(medieOra)} RON/oră</div>
+function renderStats(){
+  const grouped=groupDays();
+  let totalBrut=0,totalSef=0,totalCM=0,totalNet=0,totalOre=0;
+  const allWeeksHandled=new Set();
+
+  Object.keys(grouped).forEach(mk=>{
+    Object.keys(grouped[mk]).forEach(fwk=>{
+      allWeeksHandled.add(fwk);
+    });
+  });
+
+  days.forEach(d=>{
+    totalOre+=parseFloat(d.ore)||0;
+  });
+
+  allWeeksHandled.forEach(fwk=>{
+    const[weekStart,firma]=fwk.split('__');
+    let matchedDays=[];
+    Object.keys(grouped).forEach(mk=>{if(grouped[mk][fwk])matchedDays=grouped[mk][fwk];});
+    const info=calcWeek(matchedDays,weekStart);
+    totalBrut+=info.brut;
+    totalSef+=info.sef;
+    totalCM+=info.cm;
+    totalNet+=info.net;
+  });
+
+  const totalFuelNet=fuels.reduce((a,f)=>a+calcFuel(f).net,0);
+  const totalSrvNet=serviceRecs.reduce((a,s)=>a+calcSrv(s).net,0);
+  const profitCurat=totalNet-totalFuelNet-totalSrvNet;
+
+  let firmHtml='';
+  ['glovo','wolt','bolt'].forEach(f=>{
+    let fBrut=0;
+    days.forEach(d=>{if((d.firma||'glovo')===f)fBrut+=calcDay(d).total;});
+    if(fBrut>0)firmHtml+=`<div class="sc-item"><div class="sc-il">${FIRMS[f].name}</div><div class="sc-iv" style="color:${FIRMS[f].color}">${fmtInt(Math.round(fBrut))} RON</div></div>`;
+  });
+
+  return `
+    <div class="profit-card ${profitCurat>=0?'g':'r'}">
+      <div class="pc-lbl">PROFIT CURAT REZIDUAL (DREPTURI - CHELTUIELI)</div>
+      <div class="pc-val ${profitCurat>=0?'g':'r'}">${fmtInt(Math.round(profitCurat))} <span style="font-size:18px">RON</span></div>
+      <div class="pc-sub">Venit net distribuit din aplicații minus cheltuieli totale auto (carburant & service).</div>
     </div>
-
     <div class="sum-card">
-      <div class="sc-lbl">Incasări brut total</div>
-      <div class="sc-val">${fmtInt(Math.round(totalBrut))} <span>RON</span></div>
+      <div class="sc-lbl">Venituri totale din livrări</div>
+      <div class="sc-val g">${fmtInt(Math.round(totalNet))} <span>RON net</span></div>
       <div class="sc-grid">
-        <div class="sc-item"><div class="sc-il">Carte muncă total</div><div class="sc-iv" style="color:#e87e00">-${fmtInt(totalCM)} RON</div></div>
-        ${totalSef>0?`<div class="sc-item"><div class="sc-il">Șef 10% total</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(totalSef))} RON</div></div>`:''}
-        <div class="sc-item"><div class="sc-il">Net după deduceri</div><div class="sc-iv" style="color:#4ade80">${fmtInt(Math.round(totalNet))} RON</div></div>
-        <div class="sc-item"><div class="sc-il">Zile lucrate</div><div class="sc-iv">${days.length}</div></div>
-        <div class="sc-item"><div class="sc-il">Total ore</div><div class="sc-iv">${totalOre} h</div></div>
-        <div class="sc-item"><div class="sc-il">Săptămâni</div><div class="sc-iv">${weekSet.size}</div></div>
+        <div class="sc-item"><div class="sc-il">Total Brut</div><div class="sc-iv">${fmtInt(Math.round(totalBrut))} RON</div></div>
+        <div class="sc-item"><div class="sc-il">Reținut Șef (10%)</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(totalSef))} RON</div></div>
+        <div class="sc-item"><div class="sc-il">Carte Muncă</div><div class="sc-iv" style="color:#e87e00">-${fmtInt(Math.round(totalCM))} RON</div></div>
+        <div class="sc-item"><div class="sc-il">Ore Lucrate</div><div class="sc-iv">${totalOre} h</div></div>
       </div>
     </div>
-
-    ${firmHtml?`<div class="sum-card">
-      <div class="sc-lbl">Net pe firmă</div>
-      <div class="sc-grid">${firmHtml}</div>
-    </div>`:''}
-
-    ${fuels.length>0?`<div class="sum-card">
-      <div class="sc-lbl">Cheltuieli carburant</div>
-      <div class="sc-val b">${fmtInt(Math.round(totalFuelNet))} <span>RON</span></div>
+    ${firmHtml?`<div class="sum-card"><div class="sc-lbl">Distribuție brut pe aplicații</div><div class="sc-grid">${firmHtml}</div></div>`:''}
+    <div class="sum-card">
+      <div class="sc-lbl">Cheltuieli auto cumulate</div>
       <div class="sc-grid">
-        <div class="sc-item"><div class="sc-il">Bonuri</div><div class="sc-iv">${fuels.length}</div></div>
-        <div class="sc-item"><div class="sc-il">Litri total</div><div class="sc-iv">${fmt(fuels.reduce((a,f)=>a+(parseFloat(f.litri)||0),0),1)} L</div></div>
-        <div class="sc-item"><div class="sc-il">Decontat firmă</div><div class="sc-iv" style="color:#0ea5e9">-${fmtInt(Math.round(totalFuelDec))} RON</div></div>
-        <div class="sc-item"><div class="sc-il">Cost net</div><div class="sc-iv">${fmtInt(Math.round(totalFuelNet))} RON</div></div>
+        <div class="sc-item"><div class="sc-il">Carburant Real</div><div class="sc-iv" style="color:#0ea5e9">${fmtInt(Math.round(totalFuelNet))} RON</div></div>
+        <div class="sc-item"><div class="sc-il">Service Real</div><div class="sc-iv" style="color:#16a34a">${fmtInt(Math.round(totalSrvNet))} RON</div></div>
       </div>
-    </div>`:''}
-
-    ${serviceRecs.length>0?`<div class="sum-card">
-      <div class="sc-lbl">Cheltuieli service</div>
-      <div class="sc-val r">${fmtInt(Math.round(totalSrv))} <span>RON</span></div>
-      <div class="sc-grid">
-        <div class="sc-item"><div class="sc-il">Bonuri service</div><div class="sc-iv">${serviceRecs.length}</div></div>
-        <div class="sc-item"><div class="sc-il">Produse total</div><div class="sc-iv">${serviceRecs.reduce((a,s)=>a+(s.items||[]).length,0)}</div></div>
-      </div>
-    </div>`:''}
-
-    <div class="sec-title">Detalii pe luni</div>
-    ${allMK.map(mk=>{
-      const mW=grouped[mk]||{};
-      const mF=fm[mk]||[];
-      const mS=sm[mk]||[];
-      const mD=Object.values(mW).flat();
-      const brut=mD.reduce((a,d)=>a+calcDay(d).total,0);
-      const cm=Object.keys(mW).length*CARTE_MUNCA;
-      const sef=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).sef,0);
-      const salNet=Object.values(mW).reduce((a,wD)=>a+calcWeek(wD).net,0);
-      const fNet=mF.reduce((a,f)=>a+calcFuel(f).net,0);
-      const sNet=mS.reduce((a,s)=>a+calcSrv(s),0);
-      const mp=salNet-fNet-sNet;
-      const dom=mD.length>0?dominantFirm(mD):'glovo';
-      const fc=FIRMS[dom];
-      return`<div class="sum-card" style="background:${mp>=0?'#0a160d':'#160a0a'};border:1px solid ${mp>=0?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'}">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px;">
-          <div>
-            <div style="font-size:14px;font-weight:600;color:#666;display:flex;align-items:center;gap:6px;text-transform:capitalize">
-              ${mD.length>0?LOGO_SM[dom]:''}${monthLabel(mk)}
-            </div>
-            <div style="font-size:11px;color:#2a2a2a;margin-top:2px">${mD.length} zile · ${Object.keys(mW).length} săpt</div>
-          </div>
-          <div style="font-size:21px;font-weight:700;color:${mp>=0?'#4ade80':'#f87171'}">${fmtInt(Math.round(mp))} RON</div>
-        </div>
-        <div class="sc-grid">
-          ${mD.length>0?`<div class="sc-item"><div class="sc-il">Brut</div><div class="sc-iv">${fmtInt(Math.round(brut))} RON</div></div>`:''}
-          ${sef>0?`<div class="sc-item"><div class="sc-il">Șef 10%</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(sef))} RON</div></div>`:''}
-          ${mD.length>0?`<div class="sc-item"><div class="sc-il">Carte muncă</div><div class="sc-iv" style="color:#e87e00">-${cm} RON</div></div>`:''}
-          ${mD.length>0?`<div class="sc-item"><div class="sc-il">Sal net</div><div class="sc-iv" style="color:#4ade80">${fmtInt(Math.round(salNet))} RON</div></div>`:''}
-          ${mF.length>0?`<div class="sc-item"><div class="sc-il">Carburant</div><div class="sc-iv" style="color:#0ea5e9">-${fmtInt(Math.round(fNet))} RON</div></div>`:''}
-          ${mS.length>0?`<div class="sc-item"><div class="sc-il">Service</div><div class="sc-iv" style="color:#f87171">-${fmtInt(Math.round(sNet))} RON</div></div>`:''}
-        </div>
-      </div>`;
-    }).join('')}`;
+    </div>`;
 }
 
-// ── DELETE ────────────────────────────────────────────────────
 function askDelete(type,id,msg){
   pendingDelete={type,id};
   document.getElementById('confirm-msg').textContent=msg;
@@ -1020,14 +1010,15 @@ function askDelete(type,id,msg){
 function cancelDelete(){pendingDelete=null;document.getElementById('confirm-modal').style.display='none';}
 function doDelete(){
   if(!pendingDelete)return;
-  if(pendingDelete.type==='day'){days=days.filter(d=>d.id!==pendingDelete.id);saveDays();}
-  else if(pendingDelete.type==='fuel'){fuels=fuels.filter(f=>f.id!==pendingDelete.id);saveFuels();}
-  else if(pendingDelete.type==='srv'){serviceRecs=serviceRecs.filter(s=>s.id!==pendingDelete.id);saveSrv();}
-  cancelDelete();
-  render();
+  const{type,id}=pendingDelete;
+  if(type==='day'){days=days.filter(d=>d.id!==id);saveDays();}
+  else if(type==='fuel'){fuels=fuels.filter(f=>f.id!==id);saveFuels();}
+  else if(type==='service'){serviceRecs=serviceRecs.filter(s=>s.id!==id);saveSrv();}
+  else if(type==='vac',id){vacations=vacations.filter(v=>v.id!==id);saveVac();}
+  cancelDelete();render();
 }
 
-loadData();
+window.onload=loadData;
 </script>
 </body>
 </html>
